@@ -1,0 +1,329 @@
+Pasos Generación del proyecto de la primera entrega
+
+- Crear Proyecto
+> ng new 1PF-Laje --no-standalone
+Stylesheet format: SCSS
+SSR: No
+
+- Abrir el código con VS Code
+> cd 1PF-Laje
+> code .
+
+
+- Instalar Angular Material
+> ng add @angular/material
+(17.1.0)
+Theme: Custom
+Angular Material typography styles: Yes
+Include and enable animations: Yes
+
+
+- Probar aplicación base
+> ng serve -o
+Tal como está no funciona => editar styles.scss (quitando las ocurrencias del string dentro del archivo "1PF-Laje-")
+Ahora sí funciona
+Vaciar archivo app.component.html
+
+
+- Desarrollar Layout Administrativo
+ 
+Crear carpeta src/app/layouts
+Crear carpeta src/app/layouts/auth
+Crear carpeta src/app/layouts/dashboard
+Crear carpeta docs con archivo Pasos.txt donde se encuentra este archivo
+
+agregar docs/modules.drawio 
+agregar docs/structure.drawio
+
+- Generar módulo dashboard dentro de la carpeta layouts/dashboard/
+> ng g module layouts/dashboard
+
+- Generar módulo auth dentro de la carpeta layouts/auth/
+> ng g module layouts/auth
+
+- Generar dashboard component
+> ng g component layouts/dashboard
+
+- Quitar archivo dashboard.component.spec.ts
+
+
+- Importar el DashboardModule para usar el DashboardComponent en el el app.component.html
+    
+    dashboard.module.ts:
+        exports: [
+            DashboardComponent
+        ]
+
+    app.module.ts:
+        import { DashboardModule } from './layouts/dashboard/dashboard.module';
+
+        imports: [
+            ...
+            DashboardModule ]
+
+    Si queremos utilizar un componente DashboardComponent fuera su módulo, por ejemplo en el app.component.html,
+    hay que importar el módulo DashboardModule (en el archivo app.module.ts) y exportar el DashboardComponent
+    (desde el archivo DashboardModule)
+
+    El app.module.ts importa el DashboardModule, y este módulo a su vez exporta el DashboardComponent
+
+- agregar sidenav de angular material (dentro del dashboard component)
+    En DashboardModule:
+    import {MatSidenavModule} from '@angular/material/sidenav'; 
+
+    imports: [
+        .., MatSidenavModule ]
+
+    en DashboardComponent.html:
+
+        agregar código HTML de ejemplo de angular material sidenav
+
+    en DashboardComponent.ts
+        agregar el showFiller = false
+
+        export class DashboardComponent {
+            showFiller = false;
+        }
+
+    En dashboard.component.scss poner estilos
+
+- agregar button de angular material (dentro del dashboard component)
+    En DashboardModule:
+    import {MatButtonModule} from '@angular/material/button'; 
+
+    imports: [
+        .., MatButtonModule ]
+
+    
+- agregar toolbar de angular material (dentro del dashboard component)
+    En DashboardModule:
+     import {MatToolbarModule} from '@angular/material/toolbar'; 
+
+    imports: [
+        .., MatToolbarModule ]
+
+    en DashboardComponent.html:
+
+        agregar código HTML dentro del div class="dashboard-sidenav-content"
+
+   
+- El toolbar no funciona si no se agregan el mat-Icon (se agrega). Se agrega el mat-icon
+    En DashboardModule:
+    import {MatIconModule} from '@angular/material/icon'; 
+
+     imports: [
+        .., MatIconModule ]
+
+    Cada vez que se quiere usar un componente, se debe importar el modulo que lo contiene
+
+- Sacar el boton de Toggle sidenav (para que lo haga el icono de menu del toolbar)
+
+- Generar modulos (Students, Users, Courses, Enrollment, etc...) (IMPORTANTE: para esta entrega solo el de Students)
+> ng g module layouts/dashboard/pages/students
+
+- Generar componente Students
+> ng g component layouts/dashboard/pages/students --skip-tests 
+
+- Exportar el StudentsComponent en el Students.module.ts:
+    ...
+    exports: [
+        StudentsComponent
+    ],
+
+ - En el DashboardModule importar el StudentsModule
+    import { StudentsModule } from './pages/students/students.module';
+
+    imports: [ ..
+        StudentsModule]
+
+- Cargar listas en variables string[] en students.component.ts, que van a ser utilizadas en combos (paises, rubros, generos, etc) 
+
+- agregar el componente de students <app-students></app-students> en dashboard.component.html
+
+- agregar Table de angular material (dentro del students component)
+    En StudentsModule:
+    import {MatTableModule} from '@angular/material/table'; 
+    
+    imports: [
+    ...
+    MatTableModule]
+
+- Editar el students.component.html con una tabla de angular material de ejemplo
+
+- Instalar PrimeFlex
+    > npm install primeFlex
+
+- Editar angular.json 
+    agregar en "styles" :
+          "node_modules/primeflex/primeflex.min.css",  
+
+- Crear directorios models y components dentro de directorio Students 
+
+- Definir dentro de la carpeta models el index.ts
+
+    export interface Student {
+        ...
+    }
+
+- En students.component.ts poner el estudiantes de ejemplo en dataSource y displayedcolumns (que vienen en el html de arriba referenciados)
+    import { Student } from './models';
+
+    displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+    dataSource: Student[] = ...;
+
+- Editar el StudentsComponent html con las columnas de la tabla de alumnos
+
+- generar component student-form en layouts/dashboard/pages/students/components/
+> ng g component layouts/dashboard/pages/students/components/student-form --skip-tests
+
+- En students.module.ts
+
+    import { MatFormFieldModule } from '@angular/material/form-field'; // input wrapper
+    import { MatInputModule } from '@angular/material/input'; // input
+    import {MatSelectModule} from '@angular/material/select'; // select
+    import {MatButtonModule} from '@angular/material/button'; // button
+
+    imports : [
+        ...,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatButtonModule
+    ];
+     
+- agregar al student-form.component.ts
+    export class StudentFormComponent {
+    userForm: FormGroup ; 
+
+    constructor(private fb: FormBuilder) {
+        this.userForm = this.fb.group(
+        {
+            firstName: this.fb.control(''), ....
+
+
+- Para trabajar con los formularios de angular, importar en Students.module.ts el ReactiveFormsModule 
+    import { ReactiveFormsModule } from '@angular/forms';
+    imports: [
+        ...
+        ReactiveFormsModule]
+
+- vincular el typescript con el html. En student-form.component.html  
+    agregar el formGroup y vincularla con la variable userForm
+    agregar los formControlName  
+
+- En student-form.component.ts agregar el onSubmit()
+
+- agregar en StudentFormComponent.html (ngSubmit)="onSubmit()"
+
+- Cuando hacemos Guardar, queremos pushear el valor del formulario student-form (hijo) a la tabla de students.form (padre)
+
+- En student-form.component agregar:
+    import { ... , EventEmitter, Output} from '@angular/core';
+
+    @Output() 
+    userSubmitted = new EventEmitter();
+
+- agregar en el padre (student component.ts)
+    onUserSubmitted(ev: Student): void {
+        //this.dataSource.push(ev); //no anda porque angular material necesita que se recree el array
+     this.dataSource = [...this.dataSource,  {...ev, id: new Date().getTime()}];
+    }
+
+- en StudentFormComponent 
+    <div class="mb-3">
+        <app-student-form (userSubmitted)="onUserSubmitted($event)"></app-student-form>
+    </div>
+
+- todavia al guardar no hace nada
+
+
+  // countries: string[] = [
+    'Afganistán', 'Albania', 'Alemania', 'Andorra', 'Angola', 'Antigua y Barbuda', 'Arabia Saudita', 'Argelia', 'Argentina', 'Armenia',
+    'Australia', 'Austria', 'Azerbaiyán', 'Bahamas', 'Bahréin', 'Bangladés', 'Barbados', 'Bélgica', 'Belice', 'Benín', 'Bielorrusia',
+    'Birmania', 'Bolivia', 'Bosnia y Herzegovina', 'Botsuana', 'Brasil', 'Brunéi', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Bután',
+    'Cabo Verde', 'Camboya', 'Camerún', 'Canadá', 'Catar', 'Chad', 'Chile', 'China', 'Chipre', 'Ciudad del Vaticano', 'Colombia',
+    'Comoras', 'Corea del Norte', 'Corea del Sur', 'Costa de Marfil', 'Costa Rica', 'Croacia', 'Cuba', 'Dinamarca', 'Dominica', 'Ecuador',
+    'Egipto', 'El Salvador', 'Emiratos Árabes Unidos', 'Eritrea', 'Eslovaquia', 'Eslovenia', 'España', 'Estados Unidos', 'Estonia',
+    'Etiopía', 'Filipinas', 'Finlandia', 'Fiyi', 'Francia', 'Gabón', 'Gambia', 'Georgia', 'Ghana', 'Granada', 'Grecia', 'Guatemala',
+    'Guinea', 'Guinea Ecuatorial', 'Guinea-Bisáu', 'Guyana', 'Haití', 'Honduras', 'Hungría', 'India', 'Indonesia', 'Irak', 'Irán',
+    'Irlanda', 'Islandia', 'Islas Marshall', 'Islas Salomón', 'Israel', 'Italia', 'Jamaica', 'Japón', 'Jordania', 'Kazajistán',
+    'Kenia', 'Kirguistán', 'Kiribati', 'Kuwait', 'Laos', 'Lesoto', 'Letonia', 'Líbano', 'Liberia', 'Libia', 'Liechtenstein', 'Lituania',
+    'Luxemburgo', 'Macedonia del Norte', 'Madagascar', 'Malasia', 'Malaui', 'Maldivas', 'Malí', 'Malta', 'Marruecos', 'Mauricio', 'Mauritania',
+    'México', 'Micronesia', 'Moldavia', 'Mónaco', 'Mongolia', 'Montenegro', 'Mozambique', 'Namibia', 'Nauru', 'Nepal', 'Nicaragua', 'Níger',
+    'Nigeria', 'Noruega', 'Nueva Zelanda', 'Omán', 'Países Bajos', 'Pakistán', 'Palaos', 'Palestina', 'Panamá', 'Papúa Nueva Guinea', 'Paraguay',
+    'Perú', 'Polonia', 'Portugal', 'Reino Unido', 'República Centroafricana', 'República Checa', 'República del Congo', 'República Democrática del Congo',
+    'República Dominicana', 'Ruanda', 'Rumanía', 'Rusia', 'Samoa', 'San Cristóbal y Nieves', 'San Marino', 'San Vicente y las Granadinas', 'Santa Lucía',
+    'Santo Tomé y Príncipe', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leona', 'Singapur', 'Siria', 'Somalia', 'Sri Lanka', 'Suazilandia', 'Sudáfrica',
+    'Sudán', 'Sudán del Sur', 'Suecia', 'Suiza', 'Surinam', 'Tailandia', 'Taiwán', 'Tanzania', 'Tayikistán', 'Timor Oriental', 'Togo', 'Tonga',
+    'Trinidad y Tobago', 'Túnez', 'Turkmenistán', 'Turquía', 'Tuvalu', 'Ucrania', 'Uganda', 'Uruguay', 'Uzbekistán', 'Vanuatu', 'Vaticano', 'Venezuela',
+    'Vietnam', 'Yemen', 'Yibuti', 'Zambia', 'Zimbabue'
+
+
+
+    <!-- working Column -->
+    <ng-container matColumnDef="working">
+      <!-- HEADER -->  
+      <th mat-header-cell *matHeaderCellDef> Trabaja </th>
+      <!-- CELDA -->  
+      <td mat-cell *matCellDef="let student"> {{student.working}} </td>
+    </ng-container>
+    
+    <!-- companyName Column -->
+    <ng-container matColumnDef="companyName">
+      <!-- HEADER -->  
+      <th mat-header-cell *matHeaderCellDef> Empresa </th>
+      <!-- CELDA -->  
+      <td mat-cell *matCellDef="let student"> {{student.companyName}} </td>
+    </ng-container>
+    
+    <!-- companyIndustry Column -->
+    <ng-container matColumnDef="companyIndustry">
+      <!-- HEADER -->  
+      <th mat-header-cell *matHeaderCellDef> Industria </th>
+      <!-- CELDA -->  
+      <td mat-cell *matCellDef="let student"> {{student.companyIndustry}} </td>
+    </ng-container>
+
+    <!-- jobDescription Column -->
+    <ng-container matColumnDef="jobDescription">
+      <!-- HEADER -->  
+      <th mat-header-cell *matHeaderCellDef> Puesto </th>
+      <!-- CELDA -->  
+      <td mat-cell *matCellDef="let student"> {{student.jobDescription}} </td>
+    </ng-container>
+   
+
+
+
+           <!-- working Column -->
+    <ng-container matColumnDef="working">
+      <!-- HEADER -->  
+      <th mat-header-cell *matHeaderCellDef> Trabaja </th>
+      <!-- CELDA -->  
+      <td mat-cell *matCellDef="let student"> {{student.working}} </td>
+    </ng-container>
+    
+    <!-- companyName Column -->
+    <ng-container matColumnDef="companyName">
+      <!-- HEADER -->  
+      <th mat-header-cell *matHeaderCellDef> Empresa </th>
+      <!-- CELDA -->  
+      <td mat-cell *matCellDef="let student"> {{student.companyName}} </td>
+    </ng-container>
+    
+    <!-- companyIndustry Column -->
+    <ng-container matColumnDef="companyIndustry">
+      <!-- HEADER -->  
+      <th mat-header-cell *matHeaderCellDef> Industria </th>
+      <!-- CELDA -->  
+      <td mat-cell *matCellDef="let student"> {{student.companyIndustry}} </td>
+    </ng-container>
+
+    <!-- jobDescription Column -->
+    <ng-container matColumnDef="jobDescription">
+      <!-- HEADER -->  
+      <th mat-header-cell *matHeaderCellDef> Puesto </th>
+      <!-- CELDA -->  
+      <td mat-cell *matCellDef="let student"> {{student.jobDescription}} </td>
+    </ng-container>
+   

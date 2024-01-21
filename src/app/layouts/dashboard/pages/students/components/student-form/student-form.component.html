@@ -1,0 +1,95 @@
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="grid formgrid">
+
+    <div class="col-6">
+        <mat-form-field class="w-full">
+            <mat-label>Nombre</mat-label>
+            <input formControlName="firstName" matInput type="text">
+        </mat-form-field>
+    </div>
+  
+    <div class="col-6">
+        <mat-form-field class="w-full">
+            <mat-label>Apellido</mat-label>
+            <input formControlName="lastName" matInput type="text">
+        </mat-form-field>
+    </div>
+     
+    <div class="col-12">
+        <mat-form-field class="w-full">
+            <mat-label>DNI</mat-label>
+            <input formControlName="dni" matInput type="number">    
+        </mat-form-field> 
+    </div>
+
+    <div class="col-6">
+        <mat-form-field class="w-full">
+            <mat-label>Fecha Nacimiento</mat-label>
+            <input formControlName="birthDate" matInput type="text">    
+        </mat-form-field> 
+    </div>
+ 
+    <div class="col-6">
+        <mat-form-field class="w-full">
+            <mat-label>Email</mat-label>
+            <input formControlName="email" matInput type="email">    
+        </mat-form-field> 
+    </div>
+
+    <div class="col-6">
+        <mat-form-field class="w-full">
+            <mat-label>Genero</mat-label>
+            
+            <mat-select formControlName="gender">
+                <mat-option value="Man">Hombre</mat-option>
+                <mat-option value="Woman">Mujer</mat-option>
+                <mat-option value="another">Otro</mat-option>
+            </mat-select>
+         
+        </mat-form-field>
+    </div>
+  
+    <div class="col-6">
+        <mat-form-field class="w-full">
+            <mat-label>Direccion</mat-label>
+            <input formControlName="address" matInput type="text">    
+        </mat-form-field> 
+    </div>
+
+    <div class="col-6">
+        <mat-form-field class="w-full">
+            <mat-label>Pais Residencia</mat-label>
+            <mat-select formControlName="residenceCountry">
+                <mat-option value="Argentina">Argentina</mat-option>
+                <mat-option value="Bolivia">Bolivia</mat-option>
+                <mat-option value="Brasil">Brasil</mat-option>
+                <mat-option value="Chile">Chile</mat-option>
+                <mat-option value="Paraguay">Paraguay</mat-option>
+                <mat-option value="Uruguay">Uruguay</mat-option>
+                <mat-option value="Otro">Otro</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+ 
+    <div class="col-6">
+        <mat-form-field class="w-full">
+            <mat-label>Pais Nacimiento</mat-label>
+            <mat-select formControlName="bornCountry">
+                <mat-option value="Argentina">Argentina</mat-option>
+                <mat-option value="Bolivia">Bolivia</mat-option>
+                <mat-option value="Brasil">Brasil</mat-option>
+                <mat-option value="Chile">Chile</mat-option>
+                <mat-option value="Paraguay">Paraguay</mat-option>
+                <mat-option value="Uruguay">Uruguay</mat-option>
+                <mat-option value="Otro">Otro</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div class="col-12 flex justify-content-end">
+        <button mat-flat-button color="primary">
+             Guardar 
+        </button>
+    </div>
+</form>    
+
+<!-- <pre> {{userForm.value | json }} </pre> -->
