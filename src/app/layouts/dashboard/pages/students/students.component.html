@@ -6,9 +6,10 @@
 
     <!-- ng container no se le puede dar estilo, es como un div que no tiene representación grafica--> 
 
+    <!-- Id Column -->
     <ng-container matColumnDef="id">
       <!-- HEADER -->  
-      <th mat-header-cell *matHeaderCellDef appSize> Id </th>
+      <th mat-header-cell *matHeaderCellDef appSize> Id </th>                     <!-- appSize: directiva personalizada-->
       <!-- CELDA -->  
       <td mat-cell *matCellDef="let student"> {{ student.id }} </td>
     </ng-container>
@@ -19,11 +20,15 @@
         <th  mat-header-cell *matHeaderCellDef appSize> Nombre Completo </th>
         <!-- CELDA -->  
         
-        <!-- SIN CUSTOM PIPES -->  
-        <!-- <td mat-cell *matCellDef="let student"> {{ student.firstName + ' ' + student.lastName}} </td> -->
+        <!-- Antes: Sin CUSTOM PIPES -->  
+        <!-- <td mat-cell *matCellDef="let student"> 
+                {{ student.firstName + ' ' + student.lastName}} 
+        </td> -->
 
-        <!-- CUSTOM PIPE fullName: Apellido, Nombre -->  
-        <td mat-cell *matCellDef="let student"> {{ {firstName: student.firstName, lastName: student.lastName} | fullName }} </td>
+        <!-- Ahora: Con Custom Pipe fullName: Apellido, Nombre -->  
+        <td mat-cell *matCellDef="let student"> 
+          {{ {firstName: student.firstName, lastName: student.lastName} | fullName }}   <!-- Uso Pipe fullName -->
+        </td>
     
       </ng-container>
   
@@ -40,7 +45,9 @@
       <!-- HEADER -->  
       <th mat-header-cell *matHeaderCellDef appSize> Fecha de Nacimiento </th>
       <!-- CELDA -->  
-      <td mat-cell *matCellDef="let student"> {{ (student.birthDate | date :"dd/MM/yyyy")  }}  </td>
+      <td mat-cell *matCellDef="let student"> 
+        {{ (student.birthDate | date :"dd/MM/yyyy")  }}            <!-- Uso Pipe date con formato -->
+      </td>
     </ng-container>
 
     <!-- Edad -->
@@ -48,7 +55,9 @@
       <!-- HEADER -->  
       <th mat-header-cell *matHeaderCellDef appSize> Edad </th>
       <!-- CELDA -->  
-      <td mat-cell *matCellDef="let student"> {{ student.birthDate | edad     }}  </td>
+      <td mat-cell *matCellDef="let student"> 
+        {{ student.birthDate | edad }}  
+      </td>                                                         <!-- Uso Pipe edad -->
     </ng-container>
 
     <!-- email Column -->
@@ -101,6 +110,31 @@
       <td mat-cell *matCellDef="let student"> {{student.bornCountry}} </td>
     </ng-container>
 
+    <!-- Trabaja Column -->
+    <ng-container matColumnDef="works">
+      <!-- HEADER -->  
+      <th mat-header-cell *matHeaderCellDef appSize> Trabaja </th>
+      <!-- CELDA -->  
+      <td mat-cell *matCellDef="let student"> {{ (student.works ? 'Si' : 'No') }} </td>
+    </ng-container>
+
+
+    <!-- companyIndustry Column -->
+    <ng-container matColumnDef="companyIndustry">
+      <!-- HEADER -->  
+      <th mat-header-cell *matHeaderCellDef appSize> Industria </th>
+      <!-- CELDA -->  
+      <td mat-cell *matCellDef="let student"> {{student.companyIndustry}} </td>
+    </ng-container>
+    
+
+    <!-- jobDescription Column -->
+    <ng-container matColumnDef="jobDescription">
+      <!-- HEADER -->  
+      <th mat-header-cell *matHeaderCellDef appSize> Puesto </th>
+      <!-- CELDA -->  
+      <td mat-cell *matCellDef="let student"> {{student.jobDescription}} </td>
+    </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

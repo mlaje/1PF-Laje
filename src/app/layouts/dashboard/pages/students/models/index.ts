@@ -10,9 +10,7 @@ export interface Student {
     address: string;
     residenceCountry: string;
     bornCountry: string;
-    
-    //working: boolean;
-    //companyName: string;
-    //companyIndustry: string;
-    //jobDescription: string;
+    works: boolean;
+    companyIndustry: string;
+    jobDescription: string;
 }

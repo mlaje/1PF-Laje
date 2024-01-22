@@ -9,13 +9,14 @@ import { MatFormFieldModule } from '@angular/material/form-field'; // input wrap
 import { MatInputModule } from '@angular/material/input'; // input
 import { MatSelectModule } from '@angular/material/select'; // select
 import { MatButtonModule } from '@angular/material/button'; // button
+import { MatCheckboxModule } from '@angular/material/checkbox'; // checkbox
 import { ReactiveFormsModule } from '@angular/forms';  // formularios reactivos
 import { SharedModule } from '../../../../shared/shared.module';
-
 
 import {Component} from '@angular/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {provideNativeDateAdapter} from '@angular/material/core'; 
+
 
 @NgModule({
   declarations: [
@@ -31,10 +32,11 @@ import {provideNativeDateAdapter} from '@angular/material/core';
     MatButtonModule,
     ReactiveFormsModule,
     SharedModule, 
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatCheckboxModule
   ],
   exports: [
     StudentsComponent
-],
+  ],
 })
 export class StudentsModule { }
