@@ -1,61 +1,81 @@
 <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="grid formgrid">
 
+    <!-- First Name -->
     <div class="col-6">
         <mat-form-field class="w-full">
             <mat-label>Nombre</mat-label>
             <input formControlName="firstName" matInput type="text">
-        </mat-form-field>
+          </mat-form-field>
     </div>
   
+    <!-- Last Name -->
     <div class="col-6">
         <mat-form-field class="w-full">
             <mat-label>Apellido</mat-label>
             <input formControlName="lastName" matInput type="text">
         </mat-form-field>
     </div>
-     
-    <div class="col-12">
+    
+    <!-- DNI -->
+    <div class="col-3">
         <mat-form-field class="w-full">
             <mat-label>DNI</mat-label>
             <input formControlName="dni" matInput type="number">    
         </mat-form-field> 
     </div>
 
-    <div class="col-6">
+     <!-- Fecha de Nacimiento -->    
+    <div class="col-3">
         <mat-form-field class="w-full">
             <mat-label>Fecha Nacimiento</mat-label>
-            <input formControlName="birthDate" matInput type="text">    
+            <input formControlName="birthDate" matInput type="date">             
         </mat-form-field> 
     </div>
- 
-    <div class="col-6">
+   
+     <!-- Email -->
+    <div class="col-3">
         <mat-form-field class="w-full">
             <mat-label>Email</mat-label>
-            <input formControlName="email" matInput type="email">    
+            <input formControlName="email" matInput type="email">
+            @if (this.userForm.hasError('email') && !this.userForm.hasError('required')) {
+                <mat-error>Please enter a valid email address</mat-error>
+            }
+            @if (this.userForm.hasError('required')) {
+            <mat-error>Email is <strong>required</strong></mat-error>
+            }            
         </mat-form-field> 
     </div>
 
-    <div class="col-6">
+     <!-- Telefono -->
+    <div class="col-3">
         <mat-form-field class="w-full">
-            <mat-label>Genero</mat-label>
-            
+            <mat-label>Teléfono</mat-label>
+            <input formControlName="phone" matInput type="text">    
+        </mat-form-field> 
+    </div>
+
+     <!-- Género -->
+    <div class="col-3">
+        <mat-form-field class="w-full">
+            <mat-label>Género</mat-label>
             <mat-select formControlName="gender">
-                <mat-option value="Man">Hombre</mat-option>
-                <mat-option value="Woman">Mujer</mat-option>
-                <mat-option value="another">Otro</mat-option>
+                <mat-option value="Masculino">Masculino</mat-option>
+                <mat-option value="Femenino">Femenino</mat-option>
+                <mat-option value="Otro">Otro</mat-option>
             </mat-select>
-         
         </mat-form-field>
     </div>
   
-    <div class="col-6">
+     <!-- Dirección -->
+    <div class="col-3">
         <mat-form-field class="w-full">
             <mat-label>Direccion</mat-label>
             <input formControlName="address" matInput type="text">    
         </mat-form-field> 
     </div>
 
-    <div class="col-6">
+    <!-- Pais de Residencia -->
+    <div class="col-3">
         <mat-form-field class="w-full">
             <mat-label>Pais Residencia</mat-label>
             <mat-select formControlName="residenceCountry">
@@ -70,7 +90,8 @@
         </mat-form-field>
     </div>
  
-    <div class="col-6">
+     <!-- Pais de Nacimiento -->
+    <div class="col-3">
         <mat-form-field class="w-full">
             <mat-label>Pais Nacimiento</mat-label>
             <mat-select formControlName="bornCountry">

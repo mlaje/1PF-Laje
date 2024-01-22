@@ -1,7 +1,7 @@
 <mat-drawer-container class="dashboard-container" autosize>
     <!-- SIDEBAR -->
     <mat-drawer #drawer class="example-sidenav" mode="side">
-      <p>Auto-resizing sidenav</p>
+      <p>TBD Features</p>
       @if (showFiller) {
         <p>Lorem, ipsum dolor sit amet consectetur.</p>
       }
@@ -22,7 +22,7 @@
                 <mat-icon>menu</mat-icon>
             </button>
 
-            <span>Sistema de Inscripciones</span>
+            <span appSize>Sistema de Inscripciones</span>
             
             <span class="example-spacer"></span>
             
@@ -36,12 +36,10 @@
         </mat-toolbar>
         <!-- TOOLBAR -->  
 
-        <!-- Debajo del Toolbar van los estudiantes -->  
-
-
-      <div class="p-5">
-        <app-students></app-students>
-      </div>
+        <!-- Debajo del Toolbar van la lista de estudiantes -->  
+        <div class="p-5">
+          <app-students></app-students>
+        </div>
     </div>
     <!-- CONTENT -->
   

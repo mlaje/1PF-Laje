@@ -234,7 +234,64 @@ agregar docs/structure.drawio
         <app-student-form (userSubmitted)="onUserSubmitted($event)"></app-student-form>
     </div>
 
-- todavia al guardar no hace nada
+- editar los colores de la paleta 
+
+- agregar pipe date en el campo birthdate del archivo sudents.component.html
+    {{student.birthDate | date:"..formato.."}} 
+
+- editar el app.module.ts con el imports del LOCALE_ID:
+    import { registerLocaleData } from '@angular/common';
+    import es from '@angular/common/locales/es';
+    registerLocaleData(es);
+
+    providers: [
+        {
+        provide: LOCALE_ID ,
+        useValue: 'es-AR'
+        }
+    ]
+
+- Agregar atributo phone del alumno (form, interfaz, tabla, campos desplegados, etc)
+
+- Hacer custom pipe 
+    > ng g module layouts/dashboard/pages/pipes
+    > ng g component layouts/dashboard/pages/pipes --skip-tests
+    > ng g module shared 
+    > ng g pipe shared/full-name
+   
+    Importar el     PipesModule en el DashboardModule
+ 
+    En el PipesModule exportar el PipesComponent
+
+     exports : [  
+        PipesComponent
+        ]
+
+
+- En pipes.module.ts
+
+    import { SharedModule } from '../../../../shared/shared.module';
+
+    imports: [
+        ...
+        SharedModule]
+
+- pipe edad (descartada por el momento, falta que la fecha cargada sea un date cuando se agrega)
+> ng g pipe shared/edad     
+
+- directivas personalizadas
+> ng g d shared/size --skip-tests
+
+
+
+
+
+
+
+
+
+
+
 
 
   // countries: string[] = [

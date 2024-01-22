@@ -20,59 +20,62 @@ export class StudentsComponent {
   jobDescriptions: string[] = ['Analista', 'Asistente', 'Asociado', 'Coordinador', 'Director', 'Director Ejecutivo (CEO)', 'Empleado de Nivel Básico', 'Especialista', 'Gerente', 'Jefe de Equipo', 'Presidente', 'Socio', 'Supervisor'];
 
   // Genero
-  genders: string[] = ['Man', 'Woman', 'Another']; 
+  genders: string[] = ['Masculino', 'Femenino', 'Otro']; 
  
   // Trabaja actualmente
   //working: string[] = ['Yes', 'No', 'Unknown']; 
   
-  displayedColumns: string[] = ['id', 'fullName', 'dni', 'birthDate','email', 'gender', 'address', 
-  'residenceCountry', 'bornCountry'];
+  displayedColumns: string[] = ['id', 'fullName', 'dni', 'birthDate', 'edad', 'email', 'phone', 'gender', 'address', 'residenceCountry', 'bornCountry'];
   //,'working','companyName','companyIndustry','jobDescription'];
 
   dataSource: Student[] = [
       {
-        id: 1,
+        id: new Date().getTime(),
         firstName: 'Marcelo',
         lastName: 'Laje',
         dni: 222222222,
         birthDate:  new Date(1973, 2, 18),
         email: 'marcelo.laje@gmail.com',
-        gender: 'Man',
+        phone: '54 911 3683-5510',
+        gender: 'Masculino',
         address: 'Bragado 4655',
         residenceCountry: 'Argentina',
-        bornCountry: 'Argentina',
+        bornCountry: 'Argentina'
         //working: true,
         //companyName: 'SkyCop',
         //companyIndustry: 'Security',
         //jobDescription: 'Analista'
       },  
       {
-        id: 2,
+        id: new Date().getTime(),
         firstName: 'Valentina',
         lastName: 'Laje',
         dni: 44444444,
         birthDate:  new Date(2013, 6, 27),
         email: 'valentina.laje@gmail.com',
-        gender: 'Woman',
+        phone: '54 911 3683-5510',
+        gender: 'Femenino',
         address: 'Bragado 4671',
         residenceCountry: 'Argentina',
-        bornCountry: 'Argentina',
+        bornCountry: 'Argentina'
+        
         //working: false,
         //companyName: '',
         //companyIndustry: '',
         //jobDescription: ''
       } , 
       {
-        id: 3,
+        id: new Date().getTime(),
         firstName: 'Liliana',
         lastName: 'Ibarra',
         dni: 933333333,
         birthDate:  new Date(1975, 6, 20),
         email: 'liluibarra@gmail.com',
-        gender: 'Woman',
+        phone: '54 911 3683-5510',
+        gender: 'Femenino',
         address: 'Bragado 4688',
         residenceCountry: 'Argentina',
-        bornCountry: 'Paraguay',
+        bornCountry: 'Paraguay'
         //working: true,
         //companyName: 'Shimpumpam',
         //companyIndustry: 'Textil',

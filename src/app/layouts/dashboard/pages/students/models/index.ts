@@ -5,10 +5,12 @@ export interface Student {
     dni: number;
     birthDate: Date;
     email: string;
+    phone: string;
     gender: string;
     address: string;
     residenceCountry: string;
-    bornCountry: string
+    bornCountry: string;
+    
     //working: boolean;
     //companyName: string;
     //companyIndustry: string;
