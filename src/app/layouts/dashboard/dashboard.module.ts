@@ -11,6 +11,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { StudentsModule } from './pages/students/students.module';
 import { SharedModule } from '../../shared/shared.module';
 import { UsersModule } from './pages/users/users.module';
+import { CoursesModule } from './pages/courses/courses.module';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { UsersModule } from './pages/users/users.module';
     MatIconModule ,
     StudentsModule, 
     SharedModule,
-    UsersModule
+    UsersModule,
+    CoursesModule
   ],
   exports: [
     DashboardComponent
