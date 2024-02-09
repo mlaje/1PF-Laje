@@ -391,5 +391,111 @@ Segunda parte
         <app-User-form (userSubmitted)="onUserSubmitted($event)"></app-User-form>
     </div>
 
+
 Agregar cursos
+
+- Generar modulos Courses
+> ng g module layouts/dashboard/pages/courses
+
+- Generar componente Courses
+> ng g component layouts/dashboard/pages/courses --skip-tests 
+
+
+- Exportar el CoursesComponent en el courses.module.ts:
+    ...
+    exports: [
+        CoursesComponent
+    ],
+
+ - En el DashboardModule importar el CoursesModule
+    import { CoursesModule } from './pages/courses/courses.module';
+
+    imports: [ ..
+        CoursesModule]
+
+
+- Cargar listas en variables string[] en courses.component.ts, que van a ser utilizadas en combos (role, etc) 
+
+- Definir dentro de la carpeta courses/models el course.ts
+
+    export interface Course {
+        ...
+    }
+
+- agregar el componente de Courses <app-Courses></app-Courses> en dashboard.component.html
+
+- En Courses.component.ts poner el estudiantes de ejemplo en dataSource y displayedcolumns (que vienen en el html de arriba referenciados)
+    import { Course } from './models/course';
+
+    displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+    dataSource: Course[] = ...;
+
+- Editar el CoursesComponent html con las columnas de la tabla de alumnos
+
+
+- generar component Course-form en layouts/dashboard/pages/Courses/components/
+> ng g component layouts/dashboard/pages/Courses/components/course-form --skip-tests
+
+
+- En Courses.module.ts
+
+    import { MatFormFieldModule } from '@angular/material/form-field'; // input wrapper
+    import { MatInputModule } from '@angular/material/input'; // input
+    import {MatSelectModule} from '@angular/material/select'; // select
+    import {MatButtonModule} from '@angular/material/button'; // button
+
+    imports : [
+        ...,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatButtonModule
+    ];
+     
+- agregar al Course-form.component.ts
+    export class CourseFormComponent {
+    CourseForm: FormGroup ; 
+
+    constructor(private fb: FormBuilder) {
+        this.CourseForm = this.fb.group(
+        {
+            firstName: this.fb.control(''), ....
+
+
+- Para trabajar con los formularios de angular, importar en Courses.module.ts el ReactiveFormsModule 
+    import { ReactiveFormsModule } from '@angular/forms';
+    imports: [
+        ...
+        ReactiveFormsModule]
+
+- vincular el typescript con el html. En Course-form.component.html  
+    agregar el formGroup y vincularla con la variable CourseForm
+    agregar los formControlName  
+
+- En Course-form.component.ts agregar el onSubmit()
+
+- agregar en CourseFormComponent.html (ngSubmit)="onSubmit()"
+
+- Cuando hacemos Guardar, queremos pushear el valor del formulario Course-form (hijo) a la tabla de Courses.form (padre)
+
+- En Course-form.component agregar:
+    import { ... , EventEmitter, Output} from '@angular/core';
+
+    @Output() 
+    CourseSubmitted = new EventEmitter();
+
+- agregar en el padre (Course component.ts)
+    onCourseSubmitted(ev: Course): void {
+        //this.dataSource.push(ev); //no anda porque angular material necesita que se recree el array
+     this.dataSource = [...this.dataSource,  {...ev, id: new Date().getTime()}];
+    }
+
+- en CourseFormComponent 
+    <div class="mb-3">
+        <app-Course-form (CourseSubmitted)="onCourseSubmitted($event)"></app-Course-form>
+    </div>
+
+agregar listas de categorias, dedicacion, nivel, carrera, etc de cursos
+
+
 
