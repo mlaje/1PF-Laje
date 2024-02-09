@@ -285,3 +285,109 @@ agregar docs/structure.drawio
 
 - directivas personalizadas
 > ng g d shared/size --skip-tests
+
+*************
+Segunda parte
+*************
+
+- Generar modulos Users
+> ng g module layouts/dashboard/pages/users
+
+- Generar componente Users
+> ng g component layouts/dashboard/pages/users --skip-tests 
+
+
+- Exportar el UsersComponent en el Users.module.ts:
+    ...
+    exports: [
+        UsersComponent
+    ],
+
+ - En el DashboardModule importar el UsersModule
+    import { UsersModule } from './pages/users/users.module';
+
+    imports: [ ..
+        UsersModule]
+
+
+- Cargar listas en variables string[] en users.component.ts, que van a ser utilizadas en combos (role, etc) 
+
+- Definir dentro de la carpeta users/models el user.ts
+
+    export interface User {
+        ...
+    }
+
+- agregar el componente de users <app-users></app-users> en dashboard.component.html
+
+- En Users.component.ts poner el estudiantes de ejemplo en dataSource y displayedcolumns (que vienen en el html de arriba referenciados)
+    import { User } from './models';
+
+    displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+    dataSource: User[] = ...;
+
+- Editar el UsersComponent html con las columnas de la tabla de alumnos
+
+
+- generar component User-form en layouts/dashboard/pages/Users/components/
+> ng g component layouts/dashboard/pages/Users/components/User-form --skip-tests
+
+
+- En Users.module.ts
+
+    import { MatFormFieldModule } from '@angular/material/form-field'; // input wrapper
+    import { MatInputModule } from '@angular/material/input'; // input
+    import {MatSelectModule} from '@angular/material/select'; // select
+    import {MatButtonModule} from '@angular/material/button'; // button
+
+    imports : [
+        ...,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatButtonModule
+    ];
+     
+- agregar al User-form.component.ts
+    export class UserFormComponent {
+    userForm: FormGroup ; 
+
+    constructor(private fb: FormBuilder) {
+        this.userForm = this.fb.group(
+        {
+            firstName: this.fb.control(''), ....
+
+
+- Para trabajar con los formularios de angular, importar en Users.module.ts el ReactiveFormsModule 
+    import { ReactiveFormsModule } from '@angular/forms';
+    imports: [
+        ...
+        ReactiveFormsModule]
+
+- vincular el typescript con el html. En User-form.component.html  
+    agregar el formGroup y vincularla con la variable userForm
+    agregar los formControlName  
+
+- En User-form.component.ts agregar el onSubmit()
+
+- agregar en UserFormComponent.html (ngSubmit)="onSubmit()"
+
+- Cuando hacemos Guardar, queremos pushear el valor del formulario User-form (hijo) a la tabla de Users.form (padre)
+
+- En User-form.component agregar:
+    import { ... , EventEmitter, Output} from '@angular/core';
+
+    @Output() 
+    userSubmitted = new EventEmitter();
+
+- agregar en el padre (User component.ts)
+    onUserSubmitted(ev: User): void {
+        //this.dataSource.push(ev); //no anda porque angular material necesita que se recree el array
+     this.dataSource = [...this.dataSource,  {...ev, id: new Date().getTime()}];
+    }
+
+- en UserFormComponent 
+    <div class="mb-3">
+        <app-User-form (userSubmitted)="onUserSubmitted($event)"></app-User-form>
+    </div>
+

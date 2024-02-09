@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component , EventEmitter, Output} from '@angular/core';
 import { Student } from './models';
 
 
@@ -66,6 +66,8 @@ export class StudentsComponent {
       }  
   ];
 
+  @Output() 
+  userSubmitted = new EventEmitter();
 
   onUserSubmitted(ev: Student): void {
     //this.dataSource.push(ev); //no anda porque angular material necesita que se recree el array
