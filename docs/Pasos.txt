@@ -498,4 +498,94 @@ Agregar cursos
 agregar listas de categorias, dedicacion, nivel, carrera, etc de cursos
 
 
+- Servicio de usuarios
+ng generate service core/services/users --skip-tests 
+
+- en users.module.ts agregar
+    //providers: [UsersService]
+    providers: [
+        {
+        provide: UsersService,
+        useClass: UsersService
+        }  
+    ]
+
+- en app.module.ts
+  import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';  
+
+    providers : [ ...
+     {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        appearance: 'outline',
+      },
+    }
+
+- comentar el dataSource del users.component.ts ( se va a levantar del user.service)
+    -- dataSource: User[] ...
+    roles: string[] = [];
+    dataSource: User[] = [];
+
+
+- npm install sweetalert2
+
+- ng generate service core/services/loading 
+
+        import { Injectable } from '@angular/core';
+        import { BehaviorSubject, Observable, Subject } from 'rxjs';
+
+        @Injectable({
+        providedIn: 'root'
+        })
+        export class LoadingService {
+        private loadingTriggered$ = new BehaviorSubject<boolean>(false);
+
+        public isLoading$ = this.loadingTriggered$.asObservable();
+
+        setIsLoading(value: boolean): void {
+            this.loadingTriggered$.next(value);
+        }
+        constructor() { }
+        }
+
+
+- ng generate service core/services/alerts 
+
+
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import Swal, { SweetAlertOptions } from 'sweetalert2';
+
+@Injectable({ providedIn: 'root' })
+export class AlertsService {
+  private notification$ = new Subject<SweetAlertOptions>();
+
+  constructor() {
+    this.notification$.subscribe({
+      next: (options) => {
+        Swal.fire(options);
+      },
+    });
+  }
+
+  showAlert(options: SweetAlertOptions): void {
+    this.notification$.next(options);
+  }
+
+  showSuccess(title: string, message: string): void {
+    this.notification$.next({
+      icon: 'success',
+      title,
+      text: message,
+    });
+  }
+
+  showError(message?: string): void {
+    this.notification$.next({
+      icon: 'error',
+      title: 'Error!',
+      text: message,
+    });
+  }
+}
 

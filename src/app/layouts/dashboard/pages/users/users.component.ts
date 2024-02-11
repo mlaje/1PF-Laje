@@ -1,51 +1,80 @@
-import { Component , EventEmitter, Output} from '@angular/core';
+import { Component , EventEmitter, OnInit, Output} from '@angular/core';
 import { User } from './models/user';
-
+import { UsersService } from '../../../../core/services/users.service';
+import { LoadingService } from '../../../../core/services/loading.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss'
 })
-export class UsersComponent {
+export class UsersComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'fullName', 'userName', 'email', 'password', 'rol'];
+  displayedColumns: string[] = ['id', 'fullName', 'userName', 'email', 'password', 'rol', 'actions'];
+  
+  roles: string[] = [];
+  dataSource: User[] = [];
+  
+  constructor (private usersService: UsersService,
+               private loadingService: LoadingService) {
+  } 
 
-  dataSource: User[] = [
-    {
-      id: new Date().getTime(),
-      userName: 'cremita',
-      firstName: 'Pepe',
-      lastName: 'Cuenca',
-      email: 'pepe.cuenca@gmail.com',
-      password: 'bombazo',
-      role: 'ADMIN'     
-    },  
-    {
-      id: new Date().getTime(),
-      userName: 'chucky',
-      firstName: 'Vassily',
-      lastName: 'Ivanchuk',
-      email: 'vassily.ivanchuk@gmail.com',
-      password: 'marzo',
-      role: 'ADMIN'    
-    },
-    {
-      id: new Date().getTime(),
-      userName: 'flancito',
-      firstName: 'Marcelo',
-      lastName: 'Laje',
-      email: 'marcelo.laje@gmail.com',
-      password: 'flancito',
-      role: 'USER'    
-    }   
-  ];
-
-
-  onUserSubmitted(ev: User): void {
-    //this.dataSource.push(ev); //no anda porque angular material necesita que se recree el array
-    this.dataSource = [...this.dataSource,  {...ev, id: new Date().getTime()}];
+  ngOnInit():void {
+    this.getPageData();
   }
+  
+
+  getPageData(): void {
+    this.loadingService.setIsLoading(true);
+    forkJoin([
+      this.usersService.getRoles(),
+      this.usersService.getUsers(),
+    ]).subscribe({
+      next: (value) => {
+        this.roles = value[0];
+        this.dataSource = value[1];
+      },
+      complete: () => {
+        this.loadingService.setIsLoading(false);
+      },
+    });
+  }
+
+
+  onDeleteUser(ev: User): void {
+    this.loadingService.setIsLoading(true);
+    this.usersService.deleteUser(ev.id).subscribe({
+      next: (users) => {
+        this.dataSource = [...users];
+      },
+      complete: () => {
+        this.loadingService.setIsLoading(false);
+      },
+    });
+  }
+
+  //onUserSubmitted(ev: User): void {
+    //this.dataSource.push(ev); //no anda porque angular material necesita que se recree el array
+    //this.dataSource = [...this.dataSource,  {...ev, id: new Date().getTime()}];
+  //}
+
+	onUserSubmitted(ev: User): void {
+    
+    this.loadingService.setIsLoading(true);
+    this.usersService
+      .createUser({...ev, id: new Date().getTime()})
+      .subscribe({							
+        next: (users) => {
+          this.dataSource = [...users ]; 
+      },
+      complete: () => {
+        this.loadingService.setIsLoading(false);
+      },
+    });
+  }
+
+
 
 }
 

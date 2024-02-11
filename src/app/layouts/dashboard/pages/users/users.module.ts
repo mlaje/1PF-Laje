@@ -16,6 +16,8 @@ import { SharedModule } from '../../../../shared/shared.module';
 import {Component} from '@angular/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {provideNativeDateAdapter} from '@angular/material/core'; 
+import { UsersService } from '../../../../core/services/users.service';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -33,10 +35,18 @@ import {provideNativeDateAdapter} from '@angular/material/core';
     ReactiveFormsModule,
     SharedModule, 
     MatDatepickerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatIconModule
   ],
   exports: [
     UsersComponent
   ],
+  //providers: [UsersService]
+  providers: [
+    {
+      provide: UsersService,
+      useClass: UsersService
+    }  
+  ]
 })
 export class UsersModule { }
