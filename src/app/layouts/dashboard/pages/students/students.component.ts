@@ -1,6 +1,8 @@
 import { Component , EventEmitter, Output} from '@angular/core';
 import { Student } from './models';
-
+import { StudentsService } from '../../../../core/services/students.service';
+import { LoadingService } from '../../../../core/services/loading.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-students',
@@ -10,61 +12,68 @@ import { Student } from './models';
 export class StudentsComponent {
 
   displayedColumns: string[] = ['id', 'fullName', 'dni', 'birthDate', 'edad', 'email', 'phone', 'gender', 'address', 
-  'residenceCountry', 'bornCountry', 'works', 'companyIndustry', 'jobDescription'];
+  'residenceCountry', 'bornCountry', 'works', 'companyIndustry', 'jobDescription', 'actions'];
 
 
+  roles: string[] = [];
+  dataSource: Student[] = [];
+  
+  constructor (private studentsService: StudentsService,
+               private loadingService: LoadingService) {
+  } 
 
+  ngOnInit():void {
+    this.getPageData();
+  }
+  
 
-  dataSource: Student[] = [
-      {
-        id: new Date().getTime(),
-        firstName: 'Marcelo',
-        lastName: 'Laje',
-        dni: 222222222,
-        birthDate:  new Date(1973, 2, 18),
-        email: 'cualquier.mail@gmail.com',
-        phone: '54 911 3683-5510',
-        gender: 'Masculino',
-        address: 'Bragado 4111',
-        residenceCountry: 'Argentina',
-        bornCountry: 'Argentina',
-        works: true,
-        companyIndustry: 'Sistemas',
-        jobDescription: 'Analista'
-      },  
-      {
-        id: new Date().getTime(),
-        firstName: 'Valentina',
-        lastName: 'Laje',
-        dni: 44444444,
-        birthDate:  new Date(2013, 6, 27),
-        email: 'otro.mail@gmail.com',
-        phone: '54 911 3683-5510',
-        gender: 'Femenino',
-        address: 'Bragado 4999',
-        residenceCountry: 'Argentina',
-        bornCountry: 'Argentina',
-        works: false,
-        companyIndustry: '',
-        jobDescription: ''
-      } , 
-      {
-        id: new Date().getTime(),
-        firstName: 'Liliana',
-        lastName: 'Ibarra',
-        dni: 933333333,
-        birthDate:  new Date(1975, 6, 20),
-        email: 'lili.mail@gmail.com',
-        phone: '54 911 3683-5510',
-        gender: 'Femenino',
-        address: 'Bragado 4666',
-        residenceCountry: 'Argentina',
-        bornCountry: 'Paraguay',
-        works: true,
-        companyIndustry: 'Shimpumpam',
-        jobDescription: 'Socio'
-      }  
-  ];
+  getPageData(): void {
+    this.loadingService.setIsLoading(true);
+    forkJoin([
+      this.studentsService.getRoles(),
+      this.studentsService.getStudents(),
+    ]).subscribe({
+      next: (value) => {
+        this.roles = value[0];
+        this.dataSource = value[1];
+      },
+      complete: () => {
+        this.loadingService.setIsLoading(false);
+      },
+    });
+  }
+
+  onDeleteStudent(ev: Student): void {
+    this.loadingService.setIsLoading(true);
+    this.studentsService.deleteStudent(ev.id).subscribe({
+      next: (students) => {
+        this.dataSource = [...students];
+      },
+      complete: () => {
+        this.loadingService.setIsLoading(false);
+      },
+    });
+  }
+
+  //onUserSubmitted(ev: User): void {
+    //this.dataSource.push(ev); //no anda porque angular material necesita que se recree el array
+    //this.dataSource = [...this.dataSource,  {...ev, id: new Date().getTime()}];
+  //}
+
+	onStudentSubmitted(ev: Student): void {
+    
+    this.loadingService.setIsLoading(true);
+    this.studentsService
+      .createStudent({...ev, id: new Date().getTime()})
+      .subscribe({							
+        next: (students) => {
+          this.dataSource = [...students ]; 
+      },
+      complete: () => {
+        this.loadingService.setIsLoading(false);
+      },
+    });
+  }
 
   @Output() 
   userSubmitted = new EventEmitter();

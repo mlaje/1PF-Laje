@@ -589,3 +589,6 @@ export class AlertsService {
   }
 }
 
+ng generate service core/services/students --skip-tests 
+
+ng generate service core/services/courses --skip-tests  

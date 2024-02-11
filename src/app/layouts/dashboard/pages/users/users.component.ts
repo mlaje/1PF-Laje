@@ -41,7 +41,6 @@ export class UsersComponent implements OnInit {
     });
   }
 
-
   onDeleteUser(ev: User): void {
     this.loadingService.setIsLoading(true);
     this.usersService.deleteUser(ev.id).subscribe({
