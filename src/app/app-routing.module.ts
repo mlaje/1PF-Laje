@@ -2,12 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './layouts/auth/pages/login/login.component';
 import { DashboardComponent } from './layouts/dashboard/dashboard.component';
-import { UsersComponent } from './layouts/dashboard/pages/users/users.component';
 import { HomeComponent } from './layouts/dashboard/pages/home/home.component';
-import { CoursesComponent } from './layouts/dashboard/pages/courses/courses.component';
-import { StudentsComponent } from './layouts/dashboard/pages/students/students.component';
 import { NotFoundComponent } from './layouts/not-found/not-found.component';
-import { UserDetailComponent } from './layouts/dashboard/pages/users/pages/user-detail/user-detail.component';
 
 const routes: Routes = [
   {
@@ -15,33 +11,40 @@ const routes: Routes = [
     component: DashboardComponent,
     children: [ 
       {
+        // /dashboard/home
         path: 'home',
         component: HomeComponent,
       },
       {
+        // /dashboard/users
         path: 'users',
-        component: UsersComponent
-      },
+        loadChildren: () => 
+                      import('./layouts/dashboard/pages/users/users.module').then(
+                            (m) => m.UsersModule)   // LAZY LOADING
+        //component: UsersComponent
+      },  
       {
-        path: 'users/:idUser',
-        component: UserDetailComponent
-      },
-      {
-        path: 'courses',
-        component: CoursesComponent
-      },
-      {
+        // /dashboard/students
         path: 'students',
-        component: StudentsComponent
+        loadChildren: () => 
+                      import('./layouts/dashboard/pages/students/students.module').then(
+                            (m) => m.StudentsModule)   // LAZY LOADING
+        //component: StudentsComponent
+      },
+      { 
+        // /dashboard/courses
+        path: 'courses',
+        loadChildren: () => 
+                      import('./layouts/dashboard/pages/courses/courses.module').then(
+                            (m) => m.CoursesModule)   // LAZY LOADING
+        //component: CoursesComponent   
       },
       { 
         path: '**',
         redirectTo: 'home'
-      }
+      },
     ]
-   
   },
-  
   {
     path: '404',
     component: NotFoundComponent,
@@ -50,45 +53,13 @@ const routes: Routes = [
     path: 'auth/login',
     component: LoginComponent,
   },
- 
   {
     path: '**',
-    redirectTo: '/404',
+    redirectTo: '/dashboard',
+    //redirectTo: '/home',
   },
  
 ];
-
-/*
-const routes: Routes = [
-  {
-    path: 'dashboard',
-    canActivate: [authGuard],
-    component: DashboardComponent,
-    loadChildren: () =>
-      import('./layouts/dashboard/dashboard.module').then(
-        (m) => m.DashboardModule
-      ),
-  },
-  // {
-  //   path: 'auth/login',
-  //   component: LoginComponent,
-  // },
-  {
-    path: 'auth',
-    loadChildren: () =>
-      import('./layouts/auth/auth.module').then((m) => m.AuthModule),
-  },
-  {
-    path: '404',
-    component: NotFoundComponent,
-  },
-  {
-    path: '**',
-    redirectTo: '/auth/login',
-  },
-];
-
-*/
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

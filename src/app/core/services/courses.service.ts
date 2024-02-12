@@ -56,9 +56,6 @@ let COURSES_DB: Course[] = [
   }
 ];
 
-
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -66,6 +63,10 @@ export class CoursesService {
 
   constructor(private alerts: AlertsService) {}
   
+  getCourseById(idCourse: number | string): Observable<Course | undefined> {
+    return of(COURSES_DB.find((course) => course.id == idCourse)).pipe(delay(500));
+  }
+
   getRoles(): Observable<string[]> {
     return of(ROLES_DB).pipe(delay(3000));
   }
@@ -77,8 +78,7 @@ export class CoursesService {
   createCourse(payload: Course) {
     // en la vida real, llamar al backend
     COURSES_DB.push(payload);
-    return this.getCourses();
-      
+    return this.getCourses();      
   }
 
   deleteCourse(courseID: number) {

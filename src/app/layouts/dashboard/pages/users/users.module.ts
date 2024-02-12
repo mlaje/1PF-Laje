@@ -20,6 +20,7 @@ import { UsersService } from '../../../../core/services/users.service';
 import { MatIconModule } from '@angular/material/icon';
 import { UserDetailComponent } from './pages/user-detail/user-detail.component';
 import { RouterModule } from '@angular/router';
+import { UsersRoutingModule } from './users-routing.module';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { RouterModule } from '@angular/router';
     MatDatepickerModule,
     MatCheckboxModule,
     MatIconModule,
-    RouterModule
+    //RouterModule,
+    UsersRoutingModule
   ],
   exports: [
     UsersComponent

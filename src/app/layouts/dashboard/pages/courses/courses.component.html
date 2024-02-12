@@ -126,9 +126,12 @@
         <th mat-header-cell *matHeaderCellDef appSize> Acciones </th>
         <!-- CELDA -->  
         <td mat-cell *matCellDef="let course"> 
-        <button (click) = "onDeleteCourse(course)" mat-icon-button color="warn"> 
-          <mat-icon> delete </mat-icon>
-        </button> 
+            <button [routerLink]="course.id" color="accent" mat-icon-button>
+                <mat-icon>visibility</mat-icon>
+            </button>      
+            <button (click) = "onDeleteCourse(course)" mat-icon-button color="warn"> 
+                <mat-icon> delete </mat-icon>
+            </button> 
         </td>
       </ng-container>
 

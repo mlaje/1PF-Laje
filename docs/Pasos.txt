@@ -622,3 +622,10 @@ const routes: Routes = [
 
 User detail (misma idea con Student, Course, etc)
 - ng generate component layouts/dashboard/pages/users/pages/user-detail --skip-tests
+- ng generate component layouts/dashboard/pages/students/pages/student-detail --skip-tests  
+- ng generate component layouts/dashboard/pages/courses/pages/course-detail --skip-tests  
+
+- ng g m core
+
+Crear archivo courses-routing.module.ts (forChild)
+src/app/layouts/dashboard/pages/courses/courses-routing.module.ts

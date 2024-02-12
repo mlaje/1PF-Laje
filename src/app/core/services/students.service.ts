@@ -63,6 +63,10 @@ export class StudentsService {
 
   constructor(private alerts: AlertsService) {}
   
+  getStudentById(idStudent: number | string): Observable<Student | undefined> {
+    return of(STUDENTS_DB.find((student) => student.id == idStudent)).pipe(delay(500));
+  }
+
   getRoles(): Observable<string[]> {
     return of(ROLES_DB).pipe(delay(3000));
   }

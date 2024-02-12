@@ -15,11 +15,14 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {provideNativeDateAdapter} from '@angular/material/core'; 
 import { CoursesService } from '../../../../core/services/courses.service';
 import { MatIconModule } from '@angular/material/icon';
+import { CoursesRoutingModule } from './courses-routing.module';
+import { CourseDetailComponent } from './pages/course-detail/course-detail.component';
 
 @NgModule({
   declarations: [
     CoursesComponent,
-    CourseFormComponent
+    CourseFormComponent,
+    CourseDetailComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +35,8 @@ import { MatIconModule } from '@angular/material/icon';
     SharedModule, 
     MatDatepickerModule,
     MatCheckboxModule,
-    MatIconModule
+    MatIconModule,
+    CoursesRoutingModule
   ],
   exports: [
     CoursesComponent
