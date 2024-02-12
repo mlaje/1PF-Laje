@@ -592,3 +592,33 @@ export class AlertsService {
 ng generate service core/services/students --skip-tests 
 
 ng generate service core/services/courses --skip-tests  
+
+
+Login
+
+- ng generate component layouts/auth/pages/login --skip-tests
+
+
+- En el app-routing.module.ts
+const routes: Routes = [
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+  },
+  {
+    path: 'auth/login',
+    component: LoginComponent,
+  }
+
+- Importar el RouterModule en el DashboardModule
+
+- ng generate module layouts/dashboard/pages/home
+
+- ng generate component layouts/dashboard/pages/home --skip-tests
+
+- ng generate module layouts/not-found
+
+- ng generate component layouts/not-found
+
+User detail (misma idea con Student, Course, etc)
+- ng generate component layouts/dashboard/pages/users/pages/user-detail --skip-tests

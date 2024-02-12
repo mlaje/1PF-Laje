@@ -42,6 +42,11 @@ export class UsersService {
 
   constructor(private alerts: AlertsService) {}
   
+  getUserById(idUser: number | string): Observable<User | undefined> {
+    return of(USERS_DB.find((user) => user.id == idUser)).pipe(delay(500));
+  }
+
+
   getRoles(): Observable<string[]> {
     return of(ROLES_DB).pipe(delay(3000));
   }

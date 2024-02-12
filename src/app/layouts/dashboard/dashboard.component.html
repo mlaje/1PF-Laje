@@ -1,7 +1,42 @@
 <mat-drawer-container class="dashboard-container" autosize>
     <!-- SIDEBAR -->
     <mat-drawer #drawer class="example-sidenav" mode="side">
-      <p>TBD Features</p>
+      <mat-nav-list>
+        <a
+          #homeLink="routerLinkActive"
+          routerLinkActive
+          [activated]="homeLink.isActive"
+          routerLink="home"
+          mat-list-item
+          >Inicio</a
+        >
+        <a
+          #usersLink="routerLinkActive"
+          routerLinkActive
+          [activated]="usersLink.isActive"
+          routerLink="users"
+          mat-list-item
+          >Usuarios</a
+        >
+        <a
+          #studentsLink="routerLinkActive"
+          routerLinkActive
+          [activated]="studentsLink.isActive"
+          routerLink="students"
+          mat-list-item
+          >Estudiantes</a
+        >
+        <a
+          #coursesLink="routerLinkActive"
+          routerLinkActive
+          [activated]="coursesLink.isActive"
+          routerLink="courses"
+          mat-list-item
+          >Cursos</a
+        >
+
+        <a  (click)="logout()" mat-list-item>Cerrar sesión</a>
+      </mat-nav-list>
       @if (showFiller) {
         <p>Lorem, ipsum dolor sit amet consectetur.</p>
       }
@@ -40,7 +75,8 @@
         <div class="p-5">
           <!--<app-students></app-students>-->
           <!-- <app-users></app-users> -->
-          <app-courses></app-courses> 
+          <!--<app-courses></app-courses>  -->
+          <router-outlet></router-outlet>
         </div>
     </div>
     <!-- CONTENT -->

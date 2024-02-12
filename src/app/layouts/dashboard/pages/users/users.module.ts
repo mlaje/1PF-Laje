@@ -18,12 +18,15 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {provideNativeDateAdapter} from '@angular/material/core'; 
 import { UsersService } from '../../../../core/services/users.service';
 import { MatIconModule } from '@angular/material/icon';
+import { UserDetailComponent } from './pages/user-detail/user-detail.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
   declarations: [
     UsersComponent,
-    UserFormComponent
+    UserFormComponent,
+    UserDetailComponent
   ],
   imports: [
     CommonModule,
@@ -36,7 +39,8 @@ import { MatIconModule } from '@angular/material/icon';
     SharedModule, 
     MatDatepickerModule,
     MatCheckboxModule,
-    MatIconModule
+    MatIconModule,
+    RouterModule
   ],
   exports: [
     UsersComponent
