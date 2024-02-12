@@ -31,12 +31,10 @@ ngOnInit():void {
 getPageData(): void {
   this.loadingService.setIsLoading(true);
   forkJoin([
-    this.coursesService.getRoles(),
     this.coursesService.getCourses(),
   ]).subscribe({
     next: (value) => {
-      this.roles = value[0];
-      this.dataSource = value[1];
+      this.dataSource = value[0];
     },
     complete: () => {
       this.loadingService.setIsLoading(false);

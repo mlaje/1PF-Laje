@@ -3,8 +3,21 @@ import { Course } from '../../layouts/dashboard/pages/courses/models/course';
 import { Observable, delay, of, tap } from 'rxjs';
 import { AlertsService } from './alerts.service';
 
-const ROLES_DB: string[] = ['ADMIN', 'USER'];
+// categorias de cursos
+const categorias: string[] = ['Inglés', 'Inteligencia Artificial', 'Herramientas Digitales',
+                        'Negocios', 'Habilidades blandas', 'Diseño UX/UI',
+                        'Marketing', 'Programación y Desarrollo', 'Producto', 'Data']; 
 
+// carreta de la institución
+const carreras: string[] = ['Ninguna', 'Diseño UX/UI', 'Marketing', 'Programación y Desarrollo', 'Producto', 'Data']; 
+
+  // nivel de dificultad
+const niveles: string[] = ['Principiante', 'Intermedio', 'Avanzado', 'Experto']; 
+
+  // dedicación que demanda
+const dedicaciones: string[] = ['Baja', 'Moderada', 'Alta']; 
+
+  
 let COURSES_DB: Course[] = [
   {
     id: new Date().getTime()+1,
@@ -67,8 +80,20 @@ export class CoursesService {
     return of(COURSES_DB.find((course) => course.id == idCourse)).pipe(delay(500));
   }
 
-  getRoles(): Observable<string[]> {
-    return of(ROLES_DB).pipe(delay(3000));
+  getCourseCategories() {
+    return of(categorias).pipe(delay(60));
+  }
+
+  getCourseLevels() {
+    return of(niveles).pipe(delay(50));
+  }
+  
+  getCourseCareers() {
+    return of(carreras).pipe(delay(50));
+  }
+
+  getCourseDedications() {
+    return of(dedicaciones).pipe(delay(50));
   }
 
   getCourses() {

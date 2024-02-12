@@ -22,8 +22,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit():void {
     this.getPageData();
-  }
-  
+  }  
 
   getPageData(): void {
     this.loadingService.setIsLoading(true);
@@ -53,13 +52,7 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  //onUserSubmitted(ev: User): void {
-    //this.dataSource.push(ev); //no anda porque angular material necesita que se recree el array
-    //this.dataSource = [...this.dataSource,  {...ev, id: new Date().getTime()}];
-  //}
-
 	onUserSubmitted(ev: User): void {
-    
     this.loadingService.setIsLoading(true);
     this.usersService
       .createUser({...ev, id: new Date().getTime()})
@@ -72,8 +65,5 @@ export class UsersComponent implements OnInit {
       },
     });
   }
-
-
-
 }
 

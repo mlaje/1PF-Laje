@@ -1,32 +1,30 @@
-import { Component , EventEmitter, Output} from '@angular/core';
+import { Component , EventEmitter, OnInit, Output} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CoursesService } from '../../../../../../core/services/courses.service';
+import { LoadingService } from '../../../../../../core/services/loading.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-course-form',
   templateUrl: './course-form.component.html',
   styleUrl: './course-form.component.scss'
 })
-export class CourseFormComponent {
+export class CourseFormComponent implements OnInit {
   courseForm: FormGroup;
 
-  // categoria del curso
-  categorias: string[] = ['Inglés', 'Inteligencia Artificial', 'Herramientas Digitales',
-                        'Negocios', 'Habilidades blandas', 'Diseño UX/UI',
-                        'Marketing', 'Programación y Desarrollo', 'Producto', 'Data']; 
-  
-  // carreta de la institución
-  carreras: string[] = ['Ninguna', 'Diseño UX/UI', 'Marketing', 'Programación y Desarrollo', 'Producto', 'Data']; 
-
-  // nivel de dificultad
-  niveles: string[] = ['Principiante', 'Intermedio', 'Avanzado', 'Experto']; 
-
-  // dedicación que demanda
-  dedicaciones: string[] = ['Baja', 'Moderada', 'Alta']; 
+  // ahora se levantan del servicio courses.service  
+  categorias: string[] = [];
+  carreras: string[] = [];
+  niveles: string[] = [];
+  dedicaciones: string[] = [];
 
   @Output() 
   userSubmitted = new EventEmitter();
 
-  constructor(private fb: FormBuilder) {    // el FormBuilder es un servicio que viene en Angular que se inyecta
+  constructor(private coursesService: CoursesService,
+             private loadingService: LoadingService,
+             private fb: FormBuilder) {    // el FormBuilder es un servicio que viene en Angular que se inyecta              
+
     this.courseForm = this.fb.group(
       {
         nombre: this.fb.control('', [Validators.required, Validators.minLength(2) ] ),
@@ -46,6 +44,30 @@ export class CourseFormComponent {
   }
 
   
+  ngOnInit():void {
+    this.getPageData();
+  }  
+  
+  getPageData(): void {
+    this.loadingService.setIsLoading(true);
+    forkJoin([
+      this.coursesService.getCourseCategories(),
+      this.coursesService.getCourseCareers(),
+      this.coursesService.getCourseLevels(),
+      this.coursesService.getCourseDedications()
+    ]).subscribe({
+      next: (value) => {
+        this.categorias = value[0];
+        this.carreras = value[1];
+        this.niveles = value[2];
+        this.dedicaciones = value[3];
+      },
+      complete: () => {
+        this.loadingService.setIsLoading(false);
+      },
+    });
+  }
+
   onSubmit(): void {
     if (this.courseForm.invalid) {
       this.courseForm.markAllAsTouched();

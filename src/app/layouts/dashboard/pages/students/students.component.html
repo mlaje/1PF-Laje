@@ -68,7 +68,6 @@
       <td mat-cell *matCellDef="let student"> {{student.email}} </td>
     </ng-container>
 
-
     <!-- phone Column -->
     <ng-container matColumnDef="phone">
       <!-- HEADER -->  
@@ -76,7 +75,6 @@
       <!-- CELDA -->  
       <td mat-cell *matCellDef="let student"> {{student.phone}} </td>
     </ng-container>
-
 
     <!-- gender Column -->
     <ng-container matColumnDef="gender">
@@ -118,15 +116,13 @@
       <td mat-cell *matCellDef="let student"> {{ (student.works ? 'Si' : 'No') }} </td>
     </ng-container>
 
-
     <!-- companyIndustry Column -->
     <ng-container matColumnDef="companyIndustry">
       <!-- HEADER -->  
       <th mat-header-cell *matHeaderCellDef appSize> Industria </th>
       <!-- CELDA -->  
       <td mat-cell *matCellDef="let student"> {{student.companyIndustry}} </td>
-    </ng-container>
-    
+    </ng-container>    
 
     <!-- jobDescription Column -->
     <ng-container matColumnDef="jobDescription">
@@ -135,9 +131,6 @@
       <!-- CELDA -->  
       <td mat-cell *matCellDef="let student"> {{student.jobDescription}} </td>
     </ng-container>
-
-
-
     
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
@@ -153,7 +146,6 @@
         </button> 
       </td>
     </ng-container>
-
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

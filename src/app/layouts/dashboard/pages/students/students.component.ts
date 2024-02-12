@@ -30,12 +30,10 @@ export class StudentsComponent {
   getPageData(): void {
     this.loadingService.setIsLoading(true);
     forkJoin([
-      this.studentsService.getRoles(),
       this.studentsService.getStudents(),
     ]).subscribe({
       next: (value) => {
-        this.roles = value[0];
-        this.dataSource = value[1];
+        this.dataSource = value[0];
       },
       complete: () => {
         this.loadingService.setIsLoading(false);
