@@ -3,7 +3,8 @@ import { Course } from './models/course';
 import { CoursesService } from '../../../../core/services/courses.service';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { forkJoin } from 'rxjs';
-
+import { MatDialog } from '@angular/material/dialog';
+import { CourseFormComponent } from './components/course-form/course-form.component';
 
 @Component({
   selector: 'app-courses',
@@ -18,7 +19,8 @@ export class CoursesComponent implements OnInit {
   roles: string[] = [];
   
   constructor (private coursesService: CoursesService,
-              private loadingService: LoadingService) {
+              private loadingService: LoadingService,
+              public dialog: MatDialog) {
 } 
  
 ngOnInit():void {
@@ -39,10 +41,41 @@ getPageData(): void {
   });
 }
 
+onCreate(): void {
+  this.dialog
+  .open(CourseFormComponent)
+  .afterClosed()
+  .subscribe({
+    next: (result) => {
+      if (result) {
+        this.coursesService.createCourse(result).subscribe( {
+          next: (courses) => (this.dataSource  = courses)
+        });
+      }
+    }
+  });
+}
+
+onEdit(course: Course) {
+  this.dialog.open(CourseFormComponent, {
+    data: course,
+  }).afterClosed().subscribe({
+    next: (result) =>  {
+        if (result) {
+          this.coursesService
+            .updateProductById(course.id, result)
+            .subscribe({
+              next: (courses) => (this.dataSource = courses)
+            });
+        }
+    }
+  })
+}
+
 onDeleteCourse(ev: Course): void {
   if(confirm('Está seguro que desea borrar el Curso?')) {
     this.loadingService.setIsLoading(true);
-    this.coursesService.deleteCourse(ev.id).subscribe({
+    this.coursesService.deleteCourseById(ev.id).subscribe({
       next: (courses) => {
         this.dataSource = [...courses];
       },

@@ -102,13 +102,19 @@ export class CoursesService {
 
   createCourse(payload: Course) {
     // en la vida real, llamar al backend
-    COURSES_DB.push(payload);
+    //COURSES_DB.push(payload);
+    COURSES_DB = [...COURSES_DB, {...payload, id : new Date().getTime()}]; 
     return this.getCourses();      
   }
 
-  deleteCourse(courseID: number) {
-    COURSES_DB = COURSES_DB.filter((course) => course.id !== courseID);
+  deleteCourseById(courseID: number) {
+    COURSES_DB = COURSES_DB.filter((course) => course.id != courseID);
     return this.getCourses().pipe(tap(() => this.alerts.showSuccess('Realizado', 'Se eliminó correctamente')) ) ;
   }
-		
+	
+  updateProductById(courseId: number, data: Course) {
+    COURSES_DB = COURSES_DB.map((c) => c.id === courseId ? { ...c, ...data} : c); 
+    return this.getCourses();
+
+  }
 }

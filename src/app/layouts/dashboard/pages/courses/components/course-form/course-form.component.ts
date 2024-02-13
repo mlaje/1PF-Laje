@@ -1,8 +1,11 @@
-import { Component , EventEmitter, OnInit, Output} from '@angular/core';
+import { Component , EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CoursesService } from '../../../../../../core/services/courses.service';
 import { LoadingService } from '../../../../../../core/services/loading.service';
 import { forkJoin } from 'rxjs';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Course } from '../../models/course';
+
 
 @Component({
   selector: 'app-course-form',
@@ -23,7 +26,9 @@ export class CourseFormComponent implements OnInit {
 
   constructor(private coursesService: CoursesService,
             // private loadingService: LoadingService,
-             private fb: FormBuilder) {    // el FormBuilder es un servicio que viene en Angular que se inyecta              
+             private fb: FormBuilder,
+             private dialogRef: MatDialogRef<CourseFormComponent>,
+             @Inject(MAT_DIALOG_DATA) private editingCourse?: Course) {    // el FormBuilder es un servicio que viene en Angular que se inyecta              
 
     this.courseForm = this.fb.group(
       {
@@ -41,6 +46,10 @@ export class CourseFormComponent implements OnInit {
         horario: this.fb.control('', [Validators.required ]),
         profesor: this.fb.control('', [Validators.required ])    
       }); 
+    if (editingCourse) {
+      this.courseForm.patchValue(editingCourse);
+    }
+
   }
 
   
@@ -67,7 +76,7 @@ export class CourseFormComponent implements OnInit {
       },
     });
   }
-
+  /* El formulario no se hace submit, se usa el boton Guardar que llama a onSave()
   onSubmit(): void {
     if (this.courseForm.invalid) {
       this.courseForm.markAllAsTouched();
@@ -76,5 +85,11 @@ export class CourseFormComponent implements OnInit {
         this.courseForm.reset();        
     }
   }
+  */
+
+  onSave(): void {
+    this.dialogRef.close(this.courseForm.value);    
+  }
 
 }
+
