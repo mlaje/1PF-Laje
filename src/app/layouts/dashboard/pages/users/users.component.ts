@@ -13,7 +13,7 @@ import { UserFormComponent } from './components/user-form/user-form.component';
 })
 export class UsersComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'fullName', 'userName', 'email', 'password', 'rol', 'actions'];
+  displayedColumns: string[] = ['id', 'fullName', 'userName', 'email', 'rol', 'actions'];
   
   roles: string[] = [];
   dataSource: User[] = [];

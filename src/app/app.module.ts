@@ -12,6 +12,7 @@ import esAR from '@angular/common/locales/es-AR';
 import { SharedModule } from './shared/shared.module';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatNativeDateModule } from '@angular/material/core';
 
 registerLocaleData(es);
 registerLocaleData(esAR);
@@ -26,7 +27,8 @@ registerLocaleData(esAR);
     BrowserAnimationsModule,
     DashboardModule,
     SharedModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatNativeDateModule
     
   ],
   providers: [

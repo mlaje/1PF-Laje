@@ -13,7 +13,7 @@ let USERS_DB: User[] = [
       lastName: 'Cuenca',
       email: 'pepe.cuenca@gmail.com',
       password: 'bombazo',
-      role: 'ADMIN'     
+      role: 'USER'     
     },  
     {
       id: new Date().getTime() +2 ,
@@ -31,6 +31,15 @@ let USERS_DB: User[] = [
       lastName: 'Laje',
       email: 'marcelo.laje@gmail.com',
       password: 'flancito',
+      role: 'ADMIN'    
+    },
+    {
+      id: new Date().getTime() +4,
+      userName: 'flancitaaaa',
+      firstName: 'Valentina',
+      lastName: 'Laje',
+      email: 'valentina.laje@gmail.com',
+      password: 'nikita',
       role: 'USER'    
     }   
   ];

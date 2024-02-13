@@ -1,9 +1,10 @@
-<h1 mat-dialog-title> Estudiantes</h1>
+<h1 mat-dialog-title> Estudiante</h1>
 
  
 <div mat-dialog-content>
+    <br>
     <form [formGroup]="studentForm" class="grid formgrid">
-
+        <br>
         <!-- First Name -->
         <div class="col-6">
             <mat-form-field class="w-full">
@@ -32,7 +33,11 @@
         <div class="col-3">
             <mat-form-field class="w-full">
                 <mat-label>Fecha Nacimiento</mat-label>
-                <input formControlName="birthDate" matInput type="date">             
+                    <input formControlName="birthDate" matInput [matDatepicker]="picker">
+                    <mat-hint>DD/MM/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <!--<input formControlName="birthDate"  matInput type="date"> -->             
             </mat-form-field> 
         </div>
     
@@ -127,7 +132,7 @@
         
     </form>    
 </div>
-
+<!--<pre> {{ studentForm.value | json }}</pre> -->
 <!-- Botones Cancelar y Guardar  -->
 <div mat-dialog-actions class="col-12 flex justify-content-end">
     

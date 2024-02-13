@@ -56,7 +56,7 @@ let COURSES_DB: Course[] = [
     nombre: 'Magia',
     carrera: 'Producto',
     categoria: 'Data',
-    nivel: 'Negocios',
+    nivel: 'Intermedio',
     dedicacion: 'Alta',
     precioDeLista: 100000,
     descuento: 20,

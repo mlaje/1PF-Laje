@@ -51,7 +51,7 @@ let STUDENTS_DB: Student[] = [
   residenceCountry: 'Argentina',
   bornCountry: 'Argentina',
   works: true,
-  companyIndustry: 'Sistemas',
+  companyIndustry: 'Desarrollo Web',
   jobDescription: 'Analista'
 },  
 {
@@ -83,7 +83,7 @@ let STUDENTS_DB: Student[] = [
   residenceCountry: 'Argentina',
   bornCountry: 'Paraguay',
   works: true,
-  companyIndustry: 'Shimpumpam',
+  companyIndustry: 'Textil',
   jobDescription: 'Socio'
 }  
 ];
