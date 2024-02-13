@@ -41,15 +41,17 @@ export class UsersComponent implements OnInit {
   }
 
   onDeleteUser(ev: User): void {
-    this.loadingService.setIsLoading(true);
-    this.usersService.deleteUser(ev.id).subscribe({
-      next: (users) => {
-        this.dataSource = [...users];
-      },
-      complete: () => {
-        this.loadingService.setIsLoading(false);
-      },
-    });
+    if(confirm('Está seguro que desea borrar el Usuario?')) {
+      this.loadingService.setIsLoading(true);
+      this.usersService.deleteUser(ev.id).subscribe({
+        next: (users) => {
+          this.dataSource = [...users];
+        },
+        complete: () => {
+          this.loadingService.setIsLoading(false);
+        },
+      });
+    }
   }
 
 	onUserSubmitted(ev: User): void {

@@ -77,7 +77,7 @@ export class CoursesService {
   constructor(private alerts: AlertsService) {}
   
   getCourseById(idCourse: number | string): Observable<Course | undefined> {
-    return of(COURSES_DB.find((course) => course.id == idCourse)).pipe(delay(500));
+    return of(COURSES_DB.find((course) => course.id == idCourse)).pipe(delay(100));
   }
 
   getCourseCategories() {
@@ -97,7 +97,7 @@ export class CoursesService {
   }
 
   getCourses() {
-    return of(COURSES_DB).pipe(delay(1000));
+    return of(COURSES_DB).pipe(delay(1500));
   }
 
   createCourse(payload: Course) {

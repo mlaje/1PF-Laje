@@ -42,15 +42,17 @@ export class StudentsComponent {
   }
 
   onDeleteStudent(ev: Student): void {
-    this.loadingService.setIsLoading(true);
-    this.studentsService.deleteStudent(ev.id).subscribe({
-      next: (students) => {
-        this.dataSource = [...students];
-      },
-      complete: () => {
-        this.loadingService.setIsLoading(false);
-      },
-    });
+    if(confirm('Está seguro que desea borrar el Estudiante?')) {
+      this.loadingService.setIsLoading(true);
+      this.studentsService.deleteStudent(ev.id).subscribe({
+        next: (students) => {
+          this.dataSource = [...students];
+        },
+        complete: () => {
+          this.loadingService.setIsLoading(false);
+        },
+      });
+    }
   }
 
   //onUserSubmitted(ev: User): void {

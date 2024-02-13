@@ -16,17 +16,14 @@ export class CoursesComponent implements OnInit {
 
   dataSource: Course[] = [];
   roles: string[] = [];
-
   
   constructor (private coursesService: CoursesService,
               private loadingService: LoadingService) {
 } 
-
  
 ngOnInit():void {
   this.getPageData();
 }
-
 
 getPageData(): void {
   this.loadingService.setIsLoading(true);
@@ -43,15 +40,17 @@ getPageData(): void {
 }
 
 onDeleteCourse(ev: Course): void {
-  this.loadingService.setIsLoading(true);
-  this.coursesService.deleteCourse(ev.id).subscribe({
-    next: (courses) => {
-      this.dataSource = [...courses];
-    },
-    complete: () => {
-      this.loadingService.setIsLoading(false);
-    },
-  });
+  if(confirm('Está seguro que desea borrar el Curso?')) {
+    this.loadingService.setIsLoading(true);
+    this.coursesService.deleteCourse(ev.id).subscribe({
+      next: (courses) => {
+        this.dataSource = [...courses];
+      },
+      complete: () => {
+        this.loadingService.setIsLoading(false);
+      },
+    });
+  }
 }
 
 

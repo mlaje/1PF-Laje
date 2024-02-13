@@ -22,7 +22,7 @@ export class CourseFormComponent implements OnInit {
   userSubmitted = new EventEmitter();
 
   constructor(private coursesService: CoursesService,
-             private loadingService: LoadingService,
+            // private loadingService: LoadingService,
              private fb: FormBuilder) {    // el FormBuilder es un servicio que viene en Angular que se inyecta              
 
     this.courseForm = this.fb.group(
@@ -49,7 +49,7 @@ export class CourseFormComponent implements OnInit {
   }  
   
   getPageData(): void {
-    this.loadingService.setIsLoading(true);
+    //this.loadingService.setIsLoading(true);
     forkJoin([
       this.coursesService.getCourseCategories(),
       this.coursesService.getCourseCareers(),
@@ -63,7 +63,7 @@ export class CourseFormComponent implements OnInit {
         this.dedicaciones = value[3];
       },
       complete: () => {
-        this.loadingService.setIsLoading(false);
+       // this.loadingService.setIsLoading(false);
       },
     });
   }

@@ -13,11 +13,12 @@ export class UserFormComponent implements OnInit {
   userForm: FormGroup ; 
   
   // Roles de Usuario
-  //roles: string[] = ['ADMIN', 'USER'];
-  roles: string[] = [];   // ahora se cargan del servicio (UsersService)
+  //roles: string[] = ['ADMIN', 'USER'];    // antes
+  roles: string[] = [];                     // ahora los datos vienen a través del servicio (UsersService)
 
-  constructor(private usersService: UsersService,
-    private loadingService: LoadingService,
+  constructor(
+    private usersService: UsersService,
+    //private loadingService: LoadingService,           // por ahora no lo voy a usar aquí sino en el users.component
     private fb: FormBuilder) {    // el FormBuilder es un servicio que viene en Angular que se inyecta
     
     this.userForm = this.fb.group(
@@ -34,16 +35,17 @@ export class UserFormComponent implements OnInit {
   ngOnInit():void {
     this.getPageData();
   }
+
   getPageData(): void {
-    this.loadingService.setIsLoading(true);
-    forkJoin([                              // como sólo se levantan los roles, no tiene sentido el forkJoin por el momento
-      this.usersService.getRoles()          // si se llegara a necesitar levantar otros datos del UsersService se levantan aquí
+    //this.loadingService.setIsLoading(true);       
+    forkJoin([                      // como sólo se levantan los roles, no tiene sentido el forkJoin por el momento
+      this.usersService.getRoles()  // si se llegara a necesitar levantar otros datos del UsersService se invocaría para obtenerlos aquí
     ]).subscribe({
       next: (value) => {
         this.roles = value[0];
       },
       complete: () => {
-        this.loadingService.setIsLoading(false);
+       // this.loadingService.setIsLoading(false);
       },
     });
   }

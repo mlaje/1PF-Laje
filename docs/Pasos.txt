@@ -629,3 +629,8 @@ User detail (misma idea con Student, Course, etc)
 
 Crear archivo courses-routing.module.ts (forChild)
 src/app/layouts/dashboard/pages/courses/courses-routing.module.ts
+
+Mudar los datos de los componentes a los servicios e implementar lazy loading
+
+Refactorings varios
+

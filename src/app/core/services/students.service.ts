@@ -100,7 +100,7 @@ export class StudentsService {
   }
 
   getStudents() {
-    return of(STUDENTS_DB).pipe(delay(700));
+    return of(STUDENTS_DB).pipe(delay(1500));
   }
   
   getStudentsGenders() {

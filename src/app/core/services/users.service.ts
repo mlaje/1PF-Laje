@@ -3,7 +3,7 @@ import { User } from '../../layouts/dashboard/pages/users/models/user';
 import { Observable, delay, of, tap } from 'rxjs';
 import { AlertsService } from './alerts.service';
 
-const ROLES_DB: string[] = ['ADMIN', 'USER', 'OWNER'];
+const ROLES_DB: string[] = ['ADMIN', 'USER'];
 
 let USERS_DB: User[] = [
     {
@@ -48,11 +48,12 @@ export class UsersService {
 
 
   getRoles(): Observable<string[]> {
-    return of(ROLES_DB).pipe(delay(200));
+    //return of(ROLES_DB).pipe(delay(2000));
+    return of(ROLES_DB);
   }
 
   getUsers() {
-    return of(USERS_DB).pipe(delay(800));
+    return of(USERS_DB).pipe(delay(1500));
   }
 
   createUser(payload: User) {
