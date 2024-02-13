@@ -634,3 +634,4 @@ Mudar los datos de los componentes a los servicios e implementar lazy loading
 
 Refactorings varios
 
+Separar el formulario de carga de la tabla de cada entidad modelada (User, Student, Course)

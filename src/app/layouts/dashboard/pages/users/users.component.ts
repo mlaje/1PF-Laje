@@ -3,6 +3,8 @@ import { User } from './models/user';
 import { UsersService } from '../../../../core/services/users.service';
 import { LoadingService } from '../../../../core/services/loading.service';
 import { forkJoin } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { UserFormComponent } from './components/user-form/user-form.component';
 
 @Component({
   selector: 'app-users',
@@ -17,7 +19,8 @@ export class UsersComponent implements OnInit {
   dataSource: User[] = [];
   
   constructor (private usersService: UsersService,
-               private loadingService: LoadingService) {
+               private loadingService: LoadingService,
+               public dialog: MatDialog) {
   } 
 
   ngOnInit():void {
@@ -43,7 +46,7 @@ export class UsersComponent implements OnInit {
   onDeleteUser(ev: User): void {
     if(confirm('Está seguro que desea borrar el Usuario?')) {
       this.loadingService.setIsLoading(true);
-      this.usersService.deleteUser(ev.id).subscribe({
+      this.usersService.deleteUserById(ev.id).subscribe({
         next: (users) => {
           this.dataSource = [...users];
         },
@@ -54,18 +57,35 @@ export class UsersComponent implements OnInit {
     }
   }
 
-	onUserSubmitted(ev: User): void {
-    this.loadingService.setIsLoading(true);
-    this.usersService
-      .createUser({...ev, id: new Date().getTime()})
-      .subscribe({							
-        next: (users) => {
-          this.dataSource = [...users ]; 
-      },
-      complete: () => {
-        this.loadingService.setIsLoading(false);
-      },
+  onCreate(): void {
+    this.dialog
+    .open(UserFormComponent)
+    .afterClosed()
+    .subscribe({
+      next: (result) => {
+        if (result) {
+          this.usersService.createUser(result).subscribe( {
+            next: (users) => (this.dataSource  = users)
+          });
+        }
+      }
     });
+  }
+  
+  onEdit(user: User) {
+    this.dialog.open(UserFormComponent, {
+      data: user,
+    }).afterClosed().subscribe({
+      next: (result) =>  {
+          if (result) {
+            this.usersService
+              .updateUserById(user.id, result)
+              .subscribe({
+                next: (users) => (this.dataSource = users)
+              });
+          }
+      }
+    })
   }
 }
 

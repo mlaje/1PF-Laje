@@ -1,6 +1,11 @@
-<div class="mb-3">
-  <app-user-form (userSubmitted)="onUserSubmitted($event)"></app-user-form>
+<h1> Usuarios </h1>
+
+<div class="col-12 flex justify-content-end">
+    <button (click)="onCreate()" mat-flat-button color="primary">
+         Agregar 
+    </button>
 </div>
+
   
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
@@ -69,17 +74,18 @@
       <th mat-header-cell *matHeaderCellDef appSize> Acciones </th>
       <!-- CELDA -->  
       <td mat-cell *matCellDef="let user"> 
-        <button [routerLink]="user.id" color="accent" mat-icon-button>
-          <mat-icon>visibility</mat-icon>
-        </button>  
-      <button (click) = "onDeleteUser(user)" mat-icon-button color="warn"> 
-        <mat-icon> delete </mat-icon>
-      </button> 
+          <!-- <button [routerLink]="course.id" color="accent" mat-icon-button>
+              <mat-icon>visibility</mat-icon>
+          </button>  -->      
+          <button (click) = "onDeleteUser(user)" mat-icon-button color="warn"> 
+              <mat-icon> delete </mat-icon>
+          </button> 
+          <button (click) ="onEdit(user)" color="primary" mat-icon-button>
+              <mat-icon>edit</mat-icon>
+          </button> 
       </td>
     </ng-container>
-
-
-    
+        
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>

@@ -53,19 +53,24 @@ export class UsersService {
   }
 
   getUsers() {
-    return of(USERS_DB).pipe(delay(1500));
+    return of(USERS_DB).pipe(delay(1100));
   }
 
-  createUser(payload: User) {
-    // en la vida real, llamar al backend
-    USERS_DB.push(payload);
-    return this.getUsers();
-      
-  }
-
-  deleteUser(userID: number) {
-    USERS_DB = USERS_DB.filter((user) => user.id !== userID);
-    return this.getUsers().pipe(tap(() => this.alerts.showSuccess('Realizado', 'Se eliminó correctamente')) ) ;
-  }
 		
+  createUser(payload: User) {
+    USERS_DB = [...USERS_DB, {...payload, id : new Date().getTime()}]; 
+    return this.getUsers();      
+  }
+
+  deleteUserById(userId: number) {
+    USERS_DB = USERS_DB.filter((user) => user.id != userId);
+    return this.getUsers().pipe(tap(() => this.alerts.showSuccess('Realizado', 'Se eliminó correctamente')) );
+  }
+	
+  updateUserById(userId: number, data: User) {
+    USERS_DB = USERS_DB.map((c) => c.id === userId ? { ...c, ...data} : c); 
+    return this.getUsers();
+
+  }
+
 }

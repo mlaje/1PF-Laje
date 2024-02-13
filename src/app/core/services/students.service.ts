@@ -3,7 +3,7 @@ import { Student } from '../../layouts/dashboard/pages/students/models/index';
 import { Observable, delay, of, tap } from 'rxjs';
 import { AlertsService } from './alerts.service';
 
-const ROLES_DB: string[] = ['ADMIN', 'USER'];
+//const ROLES_DB: string[] = ['ADMIN', 'USER'];
 
 // Género
 const genders: string[] = ['Masculino', 'Femenino', 'Otro']; 
@@ -100,7 +100,7 @@ export class StudentsService {
   }
 
   getStudents() {
-    return of(STUDENTS_DB).pipe(delay(1500));
+    return of(STUDENTS_DB).pipe(delay(1200));
   }
   
   getStudentsGenders() {
@@ -117,14 +117,20 @@ export class StudentsService {
   }
 
   createStudent(payload: Student) {
-    // en la vida real, llamar al backend
-    STUDENTS_DB.push(payload);
+    STUDENTS_DB = [...STUDENTS_DB, {...payload, id : new Date().getTime()}]; 
     return this.getStudents();      
   }
 
-  deleteStudent(studentID: number) {
-    STUDENTS_DB = STUDENTS_DB.filter((student) => student.id !== studentID);
-    return this.getStudents().pipe(tap(() => this.alerts.showSuccess('Realizado', 'Se eliminó correctamente')) ) ;
+  deleteStudentById(studentId: number) {
+    STUDENTS_DB = STUDENTS_DB.filter((student) => student.id != studentId);
+    return this.getStudents().pipe(tap(() => this.alerts.showSuccess('Realizado', 'Se eliminó correctamente')) );
   }
-		
+	
+  updateStudentById(studentId: number, data: Student) {
+    STUDENTS_DB = STUDENTS_DB.map((c) => c.id === studentId ? { ...c, ...data} : c); 
+    return this.getStudents();
+
+  }
+
+
 }

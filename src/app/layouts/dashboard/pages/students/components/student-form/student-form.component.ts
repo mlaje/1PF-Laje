@@ -1,8 +1,12 @@
-import { Component , EventEmitter, OnInit, Output} from '@angular/core';
+import { Component , EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StudentsService } from '../../../../../../core/services/students.service';
 import { LoadingService } from '../../../../../../core/services/loading.service';
 import { forkJoin } from 'rxjs';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Student } from '../../models/index';
+
+
 
 @Component({
   selector: 'app-student-form',
@@ -15,7 +19,7 @@ export class StudentFormComponent implements OnInit {
    * FormControl definicion de un control para capturar el valor
    * FormArray que agrupan controles y crean array
    */
-  userForm: FormGroup;  
+  studentForm: FormGroup;  
   
   genders: string[] = [];
   countries: string[] = [];
@@ -28,8 +32,11 @@ export class StudentFormComponent implements OnInit {
 
   constructor(private studentsService: StudentsService,
              // private loadingService: LoadingService,
-              private fb: FormBuilder) {    // el FormBuilder es un servicio que viene en Angular que se inyecta
-    this.userForm = this.fb.group(
+              private fb: FormBuilder,
+              private dialogRef: MatDialogRef<StudentFormComponent>,
+              @Inject(MAT_DIALOG_DATA) private editingStudent?: Student) {    // el FormBuilder es un servicio que viene en Angular que se inyecta
+    
+    this.studentForm = this.fb.group(
       {
         firstName: this.fb.control('', [Validators.required, Validators.minLength(2) ] ),
         lastName: this.fb.control('', [Validators.required, Validators.minLength(2) ] ),
@@ -45,6 +52,9 @@ export class StudentFormComponent implements OnInit {
         companyIndustry: this.fb.control(''),
         jobDescription: this.fb.control('')    
       }); 
+      if (editingStudent) {
+        this.studentForm.patchValue(editingStudent);
+      }
   }
   
   ngOnInit():void {
@@ -74,15 +84,18 @@ export class StudentFormComponent implements OnInit {
   }
 
 
-  
+  /*
   onSubmit(): void {
-    if (this.userForm.invalid) {
-      this.userForm.markAllAsTouched();
+    if (this.studentForm.invalid) {
+      this.studentForm.markAllAsTouched();
     } else {
-        this.userSubmitted.emit(this.userForm.value);
-        this.userForm.reset();        
+        this.userSubmitted.emit(this.studentForm.value);
+        this.studentForm.reset();        
     }
   }
-
+  */
+  onSave(): void {
+    this.dialogRef.close(this.studentForm.value);    
+  }
 
 }

@@ -1,8 +1,10 @@
-import { Component , EventEmitter, OnInit , Output} from '@angular/core';
+import { Component , EventEmitter, Inject, OnInit , Output} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsersService } from '../../../../../../core/services/users.service';
 import { LoadingService } from '../../../../../../core/services/loading.service';
 import { forkJoin } from 'rxjs';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-user-form',
@@ -17,9 +19,12 @@ export class UserFormComponent implements OnInit {
   roles: string[] = [];                     // ahora los datos vienen a través del servicio (UsersService)
 
   constructor(
-    private usersService: UsersService,
-    //private loadingService: LoadingService,           // por ahora no lo voy a usar aquí sino en el users.component
-    private fb: FormBuilder) {    // el FormBuilder es un servicio que viene en Angular que se inyecta
+      private usersService: UsersService,
+      //private loadingService: LoadingService,           // por ahora no lo voy a usar aquí sino en el users.component
+      private fb: FormBuilder,
+      private dialogRef: MatDialogRef<UserFormComponent>,
+      @Inject(MAT_DIALOG_DATA) private editingUser?: User
+    ) {    // el FormBuilder es un servicio que viene en Angular que se inyecta
     
     this.userForm = this.fb.group(
       {
@@ -30,6 +35,9 @@ export class UserFormComponent implements OnInit {
         password: this.fb.control('', [Validators.required ] ),
         role: this.fb.control('', [Validators.required ] )
       }); 
+      if (editingUser) {
+        this.userForm.patchValue(editingUser);
+      }
   }
   
   ngOnInit():void {
@@ -53,7 +61,7 @@ export class UserFormComponent implements OnInit {
   @Output() 
   userSubmitted = new EventEmitter();
 
-  
+  /*
   onSubmit(): void {
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
@@ -62,5 +70,9 @@ export class UserFormComponent implements OnInit {
         this.userForm.reset();        
     }
   }
-  
+  */
+  onSave(): void {
+    this.dialogRef.close(this.userForm.value);    
+  }
+
 }
