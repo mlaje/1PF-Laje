@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { Course } from '../../layouts/dashboard/pages/courses/models/course';
-import { Observable, delay, of, tap } from 'rxjs';
+import { Observable, delay, finalize, of, tap } from 'rxjs';
 import { AlertsService } from './alerts.service';
+import { LoadingService } from './loading.service';
 
 // categorias de cursos
 const categorias: string[] = ['Inglés', 'Inteligencia Artificial', 'Herramientas Digitales',
@@ -74,34 +75,49 @@ let COURSES_DB: Course[] = [
 })
 export class CoursesService {
 
-  constructor(private alerts: AlertsService) {}
+  constructor(private alerts: AlertsService,
+              private loadingService: LoadingService) {}
   
   getCourseById(idCourse: number | string): Observable<Course | undefined> {
     return of(COURSES_DB.find((course) => course.id == idCourse)).pipe(delay(100));
   }
 
   getCourseCategories() {
-    return of(categorias).pipe(delay(60));
+    this.loadingService.setIsLoading(true);
+    return of(categorias).pipe(
+      delay(600), 
+      finalize(() => this.loadingService.setIsLoading(false)));
   }
 
   getCourseLevels() {
-    return of(niveles).pipe(delay(50));
+    this.loadingService.setIsLoading(true);
+    return of(niveles).pipe(
+      delay(600), 
+      finalize(() => this.loadingService.setIsLoading(false)));
   }
   
   getCourseCareers() {
-    return of(carreras).pipe(delay(50));
+    this.loadingService.setIsLoading(true);
+    return of(carreras).pipe(
+      delay(250), 
+      finalize(() => this.loadingService.setIsLoading(false)));
   }
 
   getCourseDedications() {
-    return of(dedicaciones).pipe(delay(50));
+    this.loadingService.setIsLoading(true);
+    return of(dedicaciones).pipe(
+      delay(300), 
+      finalize(() => this.loadingService.setIsLoading(false)));
   }
 
   getCourses() {
-    return of(COURSES_DB).pipe(delay(1500));
+    this.loadingService.setIsLoading(true);
+    return of(COURSES_DB).pipe(
+      delay(1500), 
+      finalize(() => this.loadingService.setIsLoading(false)));
   }
 
   createCourse(payload: Course) {
-    // en la vida real, llamar al backend
     //COURSES_DB.push(payload);
     COURSES_DB = [...COURSES_DB, {...payload, id : new Date().getTime()}]; 
     return this.getCourses();      

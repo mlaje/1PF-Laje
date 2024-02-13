@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { User } from '../../layouts/dashboard/pages/users/models/user';
-import { Observable, delay, of, tap } from 'rxjs';
+import { Observable, delay, finalize, of, tap } from 'rxjs';
 import { AlertsService } from './alerts.service';
+import { LoadingService } from './loading.service';
 
 const ROLES_DB: string[] = ['ADMIN', 'USER'];
 
@@ -49,7 +50,7 @@ let USERS_DB: User[] = [
 })
 export class UsersService {
 
-  constructor(private alerts: AlertsService) {}
+  constructor(private alerts: AlertsService, private loadingService: LoadingService) {}
   
   getUserById(idUser: number | string): Observable<User | undefined> {
     return of(USERS_DB.find((user) => user.id == idUser)).pipe(delay(500));
@@ -57,12 +58,18 @@ export class UsersService {
 
 
   getRoles(): Observable<string[]> {
-    //return of(ROLES_DB).pipe(delay(2000));
-    return of(ROLES_DB);
+    this.loadingService.setIsLoading(true);
+    return of(ROLES_DB).pipe(
+      delay(800), 
+      finalize(() => this.loadingService.setIsLoading(false)));
   }
 
   getUsers() {
-    return of(USERS_DB).pipe(delay(1100));
+    
+    this.loadingService.setIsLoading(true);
+    return of(USERS_DB).pipe(
+      delay(1200), 
+      finalize(() => this.loadingService.setIsLoading(false)));
   }
 
 		

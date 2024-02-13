@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { Student } from '../../layouts/dashboard/pages/students/models/index';
-import { Observable, delay, of, tap } from 'rxjs';
+import { Observable, delay, finalize, of, tap } from 'rxjs';
 import { AlertsService } from './alerts.service';
+import { LoadingService } from './loading.service';
 
 //const ROLES_DB: string[] = ['ADMIN', 'USER'];
 
@@ -93,27 +94,43 @@ let STUDENTS_DB: Student[] = [
 })
 export class StudentsService {
 
-  constructor(private alerts: AlertsService) {}
+  constructor(private alerts: AlertsService,
+              private loadingService: LoadingService) {}
   
   getStudentById(idStudent: number | string): Observable<Student | undefined> {
     return of(STUDENTS_DB.find((student) => student.id == idStudent)).pipe(delay(500));
   }
 
   getStudents() {
-    return of(STUDENTS_DB).pipe(delay(1200));
+    this.loadingService.setIsLoading(true);
+    return of(STUDENTS_DB).pipe(
+      delay(1200), 
+      finalize(() => this.loadingService.setIsLoading(false)));
   }
-  
+
   getStudentsGenders() {
-    return of(genders).pipe(delay(60));
+    this.loadingService.setIsLoading(true);
+    return of(genders).pipe(
+      delay(60), 
+      finalize(() => this.loadingService.setIsLoading(false)));
   }
   getStudentsCountries() {
-    return of(countries).pipe(delay(60));
+    this.loadingService.setIsLoading(true);
+    return of(countries).pipe(
+      delay(100), 
+      finalize(() => this.loadingService.setIsLoading(false)));
   }
   getStudentsCompanyIndustries() {
-    return of(companyIndustries).pipe(delay(60));
+    this.loadingService.setIsLoading(true);
+    return of(companyIndustries).pipe(
+      delay(100), 
+      finalize(() => this.loadingService.setIsLoading(false)));
   }
   getStudentsJobDescriptions() {
-    return of(jobDescriptions).pipe(delay(60));
+    this.loadingService.setIsLoading(true);
+    return of(jobDescriptions).pipe(
+      delay(100), 
+      finalize(() => this.loadingService.setIsLoading(false)));
   }
 
   createStudent(payload: Student) {
@@ -129,7 +146,6 @@ export class StudentsService {
   updateStudentById(studentId: number, data: Student) {
     STUDENTS_DB = STUDENTS_DB.map((c) => c.id === studentId ? { ...c, ...data} : c); 
     return this.getStudents();
-
   }
 
 
